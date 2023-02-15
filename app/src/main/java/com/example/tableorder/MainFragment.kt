@@ -73,10 +73,10 @@ class MainFragment : Fragment() {
             })  //call.enqueue(object : Callback<String>
         }   //var job = coroutineScopeIO.launch
         return binding.root
-    }
+    }   //onCreateView
 
     override fun onDestroy() {
         super.onDestroy()
         _binding = null
     }
-}
+}   //class MainFragment

@@ -8,7 +8,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.tableorder.databinding.FragmentBlankBinding
+import com.example.tableorder.databinding.FragmentItemBinding
 import com.example.tableorder.retrofit.ApiClient
 import com.example.tableorder.retrofit.ApiInterface
 import com.example.tableorder.vo.ItemVO
@@ -26,7 +26,8 @@ import java.util.ArrayList
 
 class ItemFragment(tabCodeVO: TabCodeVO) : Fragment() {
 
-    lateinit var binding: FragmentBlankBinding
+    private var _binding : FragmentItemBinding? = null
+    private val binding get() = _binding!!
 
     private val apiInterface : ApiInterface = ApiClient.getApiClient().create(ApiInterface::class.java)
     private val coroutineScopeIO = CoroutineScope(Dispatchers.IO)
@@ -43,7 +44,7 @@ class ItemFragment(tabCodeVO: TabCodeVO) : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = FragmentBlankBinding.inflate(inflater, container, false)
+        _binding = FragmentItemBinding.inflate(inflater, container, false)
 
         //소메뉴를 불러오고,
         job = coroutineScopeIO.launch {
@@ -75,4 +76,9 @@ class ItemFragment(tabCodeVO: TabCodeVO) : Fragment() {
         }   //var job = coroutineScopeIO.launch
         return binding.root
     }   //override fun onCreateView
+
+    override fun onDestroy() {
+        super.onDestroy()
+        _binding = null
+    }
 }   //class ItemFragment
