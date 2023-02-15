@@ -11,13 +11,13 @@ import com.example.tableorder.vo.ItemVO
 
 class InnerAdapter(
     requireContext: Context,
-    menuList: List<ItemVO>
+    itemList: List<ItemVO>
 ) : Adapter<InnerAdapter.InnerViewHolder>(){
 
-    var menuList: List<ItemVO>
+    var itemList: List<ItemVO>
 
     init {
-        this.menuList = menuList
+        this.itemList = itemList
     }
 
     class InnerViewHolder(binding : ItemRecvInnerBinding) : ViewHolder(binding.root){
@@ -35,11 +35,11 @@ class InnerAdapter(
     }
 
     override fun onBindViewHolder(h: InnerViewHolder, i: Int) {
-        h.menu.text = menuList[i].itemName2
+        h.menu.text = itemList[i].itemName2
     }
 
     override fun getItemCount(): Int {
-        return menuList.size
+        return itemList.size
     }
 
     //리사이클러 뷰 아이템 재활용으로 인한 데이터 꼬임 현상 방지

@@ -34,7 +34,7 @@ class ItemFragment(tabCodeVO: TabCodeVO) : Fragment() {
     lateinit var job: Job
 
     var tabCodeVO : TabCodeVO
-    lateinit var menuList : List<ItemVO>
+    lateinit var itemList : List<ItemVO>
 
     init {
         this.tabCodeVO = tabCodeVO
@@ -53,11 +53,11 @@ class ItemFragment(tabCodeVO: TabCodeVO) : Fragment() {
                 override fun onResponse(call: Call<String>, response: Response<String>) {
                     if(response.isSuccessful){
 
-                        menuList = Gson().fromJson(response.body(), object : TypeToken<ArrayList<ItemVO?>?>(){}.type)
+                        itemList = Gson().fromJson(response.body(), object : TypeToken<ArrayList<ItemVO?>?>(){}.type)
 
                         //불러온 소메뉴를 어댑터로 그려준다.
                         //그리는 과정은 innerAdapter에서.
-                        val innerAdapter = InnerAdapter(requireContext(), menuList)
+                        val innerAdapter = InnerAdapter(requireContext(), itemList)
                         val manager = LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false)
 
                         binding.innerRecv.adapter = innerAdapter
