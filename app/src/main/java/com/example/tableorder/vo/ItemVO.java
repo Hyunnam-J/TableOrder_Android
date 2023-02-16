@@ -2,7 +2,7 @@ package com.example.tableorder.vo;
 
 public class ItemVO {
 
-	String comId, pName, itemName2, pos, pCode, tabNo, itemCode, UPrice;
+	String comId, pName, itemName2, pos, pCode, tabNo, itemCode, uPrice, bColor;
 
 	public String getComId() {
 		return comId;
@@ -60,12 +60,19 @@ public class ItemVO {
 		this.itemCode = itemCode;
 	}
 
-	public String getUPrice() {
-		return UPrice;
+	public String getuPrice() {
+		return uPrice;
 	}
 
-	public void setUPrice(String uPrice) {
-		UPrice = uPrice;
+	public void setuPrice(String uPrice) {
+		this.uPrice = uPrice;
 	}
 
+	public String getbColor() {
+		return bColor;
+	}
+
+	public void setbColor(String bColor) {
+		this.bColor = bColor;
+	}
 }

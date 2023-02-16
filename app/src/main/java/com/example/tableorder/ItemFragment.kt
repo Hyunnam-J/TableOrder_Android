@@ -58,7 +58,7 @@ class ItemFragment(tabCodeVO: TabCodeVO) : Fragment() {
                         //불러온 소메뉴를 어댑터로 그려준다.
                         //그리는 과정은 innerAdapter에서.
                         val innerAdapter = InnerAdapter(requireContext(), itemList)
-                        val manager = LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false)
+                        val manager = LinearLayoutManager(requireContext(), RecyclerView.HORIZONTAL, false)
 
                         binding.innerRecv.adapter = innerAdapter
                         binding.innerRecv.layoutManager = manager
