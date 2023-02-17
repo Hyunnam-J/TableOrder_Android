@@ -1,19 +1,19 @@
-package com.example.tableorder
+package com.example.tableorder.main
 
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Lifecycle
 import androidx.viewpager2.adapter.FragmentStateAdapter
-import com.example.tableorder.vo.TabCodeVO
+import com.example.tableorder.vo.main.MainTabCodeVO
 
 class ViewPagerAdapter(
     fragmentManager: FragmentManager,
     lifecycle: Lifecycle,
-    tabList: List<TabCodeVO>
+    tabList: List<MainTabCodeVO>
 ) :
     FragmentStateAdapter(fragmentManager, lifecycle) {
 
-    var tabList: List<TabCodeVO>
+    var tabList: List<MainTabCodeVO>
 
     init {
         this.tabList = tabList

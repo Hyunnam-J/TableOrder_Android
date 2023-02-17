@@ -1,8 +1,9 @@
-package com.example.tableorder.vo;
+package com.example.tableorder.vo.basket;
 
-public class ItemVO {
+public class BasketItemVO {
 
 	String comId, pName, itemName2, pos, pCode, tabNo, itemCode, uPrice, bColor;
+	int quantity;
 
 	public String getComId() {
 		return comId;
@@ -74,5 +75,13 @@ public class ItemVO {
 
 	public void setbColor(String bColor) {
 		this.bColor = bColor;
+	}
+
+	public int getQuantity() {
+		return quantity;
+	}
+
+	public void setQuantity(int quantity) {
+		this.quantity = quantity;
 	}
 }

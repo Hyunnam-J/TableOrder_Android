@@ -3,6 +3,7 @@ package com.example.tableorder
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.example.tableorder.databinding.ActivityMainBinding
+import com.example.tableorder.main.MainFragment
 
 class MainActivity() : AppCompatActivity() {
 

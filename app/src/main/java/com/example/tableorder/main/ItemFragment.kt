@@ -1,18 +1,21 @@
-package com.example.tableorder
+package com.example.tableorder.main
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.FrameLayout
+import android.widget.FrameLayout.LayoutParams
 import android.widget.Toast
-import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.tableorder.databinding.FragmentItemBinding
 import com.example.tableorder.retrofit.ApiClient
-import com.example.tableorder.retrofit.ApiInterface
-import com.example.tableorder.vo.ItemVO
-import com.example.tableorder.vo.TabCodeVO
+import com.example.tableorder.retrofit.MainApiInterface
+import com.example.tableorder.vo.main.MainItemVO
+import com.example.tableorder.vo.main.MainTabCodeVO
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import kotlinx.coroutines.CoroutineScope
@@ -22,19 +25,20 @@ import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import java.util.ArrayList
 
-class ItemFragment(tabCodeVO: TabCodeVO) : Fragment() {
+
+class ItemFragment(tabCodeVO: MainTabCodeVO) : Fragment() {
 
     private var _binding : FragmentItemBinding? = null
     private val binding get() = _binding!!
 
-    private val apiInterface : ApiInterface = ApiClient.getApiClient().create(ApiInterface::class.java)
+    private val apiInterface : MainApiInterface = ApiClient.getApiClient().create(
+        MainApiInterface::class.java)
     private val coroutineScopeIO = CoroutineScope(Dispatchers.IO)
     lateinit var job: Job
 
-    var tabCodeVO : TabCodeVO
-    lateinit var itemList : List<ItemVO>
+    var tabCodeVO : MainTabCodeVO
+    lateinit var itemList : List<MainItemVO>
 
     init {
         this.tabCodeVO = tabCodeVO
@@ -53,15 +57,20 @@ class ItemFragment(tabCodeVO: TabCodeVO) : Fragment() {
                 override fun onResponse(call: Call<String>, response: Response<String>) {
                     if(response.isSuccessful){
 
-                        itemList = Gson().fromJson(response.body(), object : TypeToken<ArrayList<ItemVO?>?>(){}.type)
+                        itemList = Gson().fromJson(response.body(), object : TypeToken<ArrayList<MainItemVO?>?>(){}.type)
 
                         //불러온 소메뉴를 어댑터로 그려준다.
                         //그리는 과정은 innerAdapter에서.
                         val innerAdapter = InnerAdapter(requireContext(), itemList)
-                        val manager = LinearLayoutManager(requireContext(), RecyclerView.HORIZONTAL, false)
+                        val innerManager = GridLayoutManager(requireContext(), 2, RecyclerView.HORIZONTAL, false)
 
                         binding.innerRecv.adapter = innerAdapter
-                        binding.innerRecv.layoutManager = manager
+                        binding.innerRecv.layoutManager = innerManager
+
+
+
+
+
 
                     }else{
                         Toast.makeText(requireContext(), "통신 에러", Toast.LENGTH_LONG)
@@ -81,4 +90,5 @@ class ItemFragment(tabCodeVO: TabCodeVO) : Fragment() {
         super.onDestroy()
         _binding = null
     }
+
 }   //class ItemFragment

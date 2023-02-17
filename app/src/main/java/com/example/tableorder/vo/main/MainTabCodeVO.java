@@ -1,8 +1,8 @@
-package com.example.tableorder.vo;
+package com.example.tableorder.vo.main;
 
-public class TabCodeVO {
+public class MainTabCodeVO {
 
-	String comId, pName, pos, pCode, tabNo, mon, tue, wed, thu, fri, sat, sun;
+	String comId, pName, pos, pCode, mon, tue, wed, thu, fri, sat, sun;
 
 	public String getComId() {
 		return comId;
@@ -34,14 +34,6 @@ public class TabCodeVO {
 
 	public void setpCode(String pCode) {
 		this.pCode = pCode;
-	}
-
-	public String getTabNo() {
-		return tabNo;
-	}
-
-	public void setTabNo(String tabNo) {
-		this.tabNo = tabNo;
 	}
 
 	public String getMon() {
@@ -99,5 +91,4 @@ public class TabCodeVO {
 	public void setSun(String sun) {
 		this.sun = sun;
 	}
-
 }

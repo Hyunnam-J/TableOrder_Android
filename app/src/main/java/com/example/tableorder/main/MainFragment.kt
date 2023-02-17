@@ -1,17 +1,18 @@
-package com.example.tableorder
+package com.example.tableorder.main
 
 import android.os.Bundle
-import android.util.Log
 
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import com.example.tableorder.R
+import com.example.tableorder.basket.BasketFragment
 import com.example.tableorder.databinding.FragmentMainBinding
 import com.example.tableorder.retrofit.ApiClient
-import com.example.tableorder.retrofit.ApiInterface
-import com.example.tableorder.vo.TabCodeVO
+import com.example.tableorder.retrofit.MainApiInterface
+import com.example.tableorder.vo.main.MainTabCodeVO
 import com.google.android.material.tabs.TabLayoutMediator
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
@@ -28,11 +29,12 @@ class MainFragment : Fragment() {
     private var _binding : FragmentMainBinding? = null
     private val binding get() = _binding!!
 
-    private val apiInterface : ApiInterface = ApiClient.getApiClient().create(ApiInterface::class.java)
+    private val apiInterface : MainApiInterface = ApiClient.getApiClient().create(
+        MainApiInterface::class.java)
     private val coroutineScopeIO = CoroutineScope(Dispatchers.IO)
     lateinit var job: Job
 
-    lateinit var tabList : List<TabCodeVO>
+    lateinit var tabList : List<MainTabCodeVO>
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -47,7 +49,7 @@ class MainFragment : Fragment() {
             call.enqueue(object : Callback<String>{
                 override fun onResponse(call: Call<String>, response: Response<String>) {
                     if(response.isSuccessful){
-                        tabList = Gson().fromJson(response.body(), object : TypeToken<ArrayList<TabCodeVO?>?>(){}.type)
+                        tabList = Gson().fromJson(response.body(), object : TypeToken<ArrayList<MainTabCodeVO?>?>(){}.type)
 
                         val viewPager = binding.viewPager
                         val tabLayout = binding.tabLayout
@@ -72,6 +74,17 @@ class MainFragment : Fragment() {
                 }
             })  //call.enqueue(object : Callback<String>
         }   //var job = coroutineScopeIO.launch
+
+        binding.back.setOnClickListener{
+            val manager = activity?.supportFragmentManager
+            manager?.beginTransaction()?.remove(this)?.commit()
+            manager?.popBackStack()
+        }
+
+        binding.basket.setOnClickListener{
+            parentFragmentManager.beginTransaction().replace(R.id.container, BasketFragment()).commit()
+        }
+
         return binding.root
     }   //onCreateView
 
