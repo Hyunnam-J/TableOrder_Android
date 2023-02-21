@@ -4,6 +4,18 @@ public class MainItemVO {
 
 	String comId, pName, itemName2, pos, pCode, tabNo, itemCode, uPrice, bColor;
 
+	public MainItemVO(String comId, String pName, String itemName2, String pos, String pCode, String tabNo, String itemCode, String uPrice, String bColor) {
+		this.comId = comId;
+		this.pName = pName;
+		this.itemName2 = itemName2;
+		this.pos = pos;
+		this.pCode = pCode;
+		this.tabNo = tabNo;
+		this.itemCode = itemCode;
+		this.uPrice = uPrice;
+		this.bColor = bColor;
+	}
+
 	public String getComId() {
 		return comId;
 	}

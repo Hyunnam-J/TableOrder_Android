@@ -9,13 +9,11 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <TextView
+    <ImageView
         android:id="@+id/enter"
+        android:background="@drawable/thumb"
 
-        android:text="현재 액티비티, 프래그먼트로 들어가기"
-        android:textSize="40dp"
-
-        android:layout_gravity="center_vertical|center_horizontal"
+        android:layout_gravity="center"
 
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>

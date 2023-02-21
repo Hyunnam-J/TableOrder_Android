@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="quantityText">
+        <item name="android:gravity">center|center_vertical</item>
+        <item name="android:textSize">26dp</item>
+        <item name="android:letterSpacing">0.1</item>
+    </style>
+
+    <style name="priceText" parent="quantityText">
+        <item name="android:gravity">right|center_vertical</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:layout_marginRight">20dp</item>
+    </style>
+
+    <style name="buttonText" parent="quantityText">
+        <item name="android:textColor">@color/white</item>
+        <item name="android:padding">10dp</item>
+    </style>
+
+    <style name="mainRecvNameText" parent="quantityText">
+
+    </style>
+
+    <style name="mainRecvPriceText" parent="quantityText">
+
+    </style>
+
+    <style name="totalPriceText" parent="priceText">
+        <item name="android:textSize">36dp</item>
+        <item name="android:textColor">#F13B3B</item>
+    </style>
+
+    <style name="tabText" parent="quantityText">
+        <item name="android:textSize">30dp</item>
+        <item name="android:textStyle">bold</item>
+
+    </style>
+
+</resources>

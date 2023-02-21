@@ -1,12 +1,9 @@
 package com.example.tableorder.main
 
 import android.os.Bundle
-import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.FrameLayout
-import android.widget.FrameLayout.LayoutParams
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
@@ -27,7 +24,7 @@ import retrofit2.Callback
 import retrofit2.Response
 
 
-class ItemFragment(tabCodeVO: MainTabCodeVO) : Fragment() {
+class ItemFragment(tabCodeVO: MainTabCodeVO, map: HashMap<String, Any>) : Fragment() {
 
     private var _binding : FragmentItemBinding? = null
     private val binding get() = _binding!!
@@ -38,10 +35,13 @@ class ItemFragment(tabCodeVO: MainTabCodeVO) : Fragment() {
     lateinit var job: Job
 
     var tabCodeVO : MainTabCodeVO
-    lateinit var itemList : List<MainItemVO>
+    lateinit var itemList : ArrayList<MainItemVO>
+
+    var map : HashMap<String, Any> = HashMap()
 
     init {
         this.tabCodeVO = tabCodeVO
+        this.map = map
     }
 
     override fun onCreateView(
@@ -61,16 +61,11 @@ class ItemFragment(tabCodeVO: MainTabCodeVO) : Fragment() {
 
                         //불러온 소메뉴를 어댑터로 그려준다.
                         //그리는 과정은 innerAdapter에서.
-                        val innerAdapter = InnerAdapter(requireContext(), itemList)
+                        val innerAdapter = InnerAdapter(requireContext(), itemList, map)
                         val innerManager = GridLayoutManager(requireContext(), 2, RecyclerView.HORIZONTAL, false)
 
                         binding.innerRecv.adapter = innerAdapter
                         binding.innerRecv.layoutManager = innerManager
-
-
-
-
-
 
                     }else{
                         Toast.makeText(requireContext(), "통신 에러", Toast.LENGTH_LONG)

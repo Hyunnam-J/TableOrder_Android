@@ -1,18 +1,123 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout
+<LinearLayout
     android:background="@color/white"
 
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".basket.BasketFragment">
+    tools:context=".basket.BasketFragment"
+    android:orientation="vertical">
 
-    <!-- TODO: Update blank fragment layout -->
     <TextView
+        android:layout_marginTop="20dp"
+        style="@style/quantityText"
+        android:text="장바구니"
+        android:textStyle="bold"
+        android:textSize="40dp"
+
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="basket"
+        android:layout_height="0dp"
+        android:layout_weight="1"
         />
 
-</FrameLayout>
+    <LinearLayout
+        android:layout_marginVertical="20dp"
+
+        android:layout_width="match_parent"
+        android:layout_height="1dp">
+
+        <View
+            android:background="#fff"
+
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_weight="0.1"/>
+
+        <View
+            android:background="#D1D0D0"
+
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_weight="1"/>
+
+        <View
+            android:background="#fff"
+
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_weight="0.1"/>
+
+    </LinearLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/basketRecv"
+
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="9"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="horizontal">
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="3"/>
+
+        <TextView
+            style="@style/totalPriceText"
+            android:text="합계"
+
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            />
+
+        <TextView
+            style="@style/totalPriceText"
+            android:id="@+id/totalPrice"
+
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_margin="15dp"
+
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1.3"
+        android:orientation="horizontal">
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="3"/>
+
+        <androidx.appcompat.widget.AppCompatButton
+            style="@style/buttonText"
+            android:id="@+id/back"
+            android:text="뒤로가기"
+
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"/>
+
+        <androidx.appcompat.widget.AppCompatButton
+            style="@style/buttonText"
+            android:id="@+id/order"
+            android:text="주문하기"
+
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"/>
+
+    </LinearLayout>
+</LinearLayout>

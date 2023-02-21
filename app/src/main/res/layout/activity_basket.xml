@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    tools:context=".main.BasketActivity"
+    android:orientation="horizontal">
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1.5"
+        android:orientation="vertical">
+
+        <ImageView
+            android:layout_margin="30dp"
+            android:id="@+id/dialogImage"
+
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="2"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"/>
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="0.3"/>
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.7"
+            android:orientation="horizontal">
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="5"
+                />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/itemCancel"
+                android:background="@drawable/ic_baseline_clear_24"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="10dp"
+
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                />
+
+        </LinearLayout>
+
+        <View
+            android:background="#6A6969"
+            android:layout_marginTop="15dp"
+            android:layout_marginBottom="20dp"
+
+            android:layout_width="match_parent"
+            android:layout_height="1dp"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            >
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/removeQuantity"
+                android:background="@drawable/ic_baseline_remove_circle_24_unactivate"
+
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"/>
+
+            <TextView
+                android:id="@+id/itemQuantity"
+                android:text="1"
+                style="@style/quantityText"
+
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"/>
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/addQuantity"
+                android:background="@drawable/ic_baseline_add_circle_24"
+
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"/>
+
+            <TextView
+                android:id="@+id/itemPrice"
+                style="@style/priceText"
+
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="4"/>
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="5"/>
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:layout_margin="15dp"
+            style="@style/buttonText"
+            android:id="@+id/itemConfirm"
+            android:text="장바구니에 담기"
+
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            />
+
+    </LinearLayout>
+</LinearLayout>

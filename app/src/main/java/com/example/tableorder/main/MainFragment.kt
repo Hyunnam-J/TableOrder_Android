@@ -1,6 +1,8 @@
 package com.example.tableorder.main
 
+import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
 
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -13,6 +15,7 @@ import com.example.tableorder.databinding.FragmentMainBinding
 import com.example.tableorder.retrofit.ApiClient
 import com.example.tableorder.retrofit.MainApiInterface
 import com.example.tableorder.vo.main.MainTabCodeVO
+import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
@@ -22,7 +25,7 @@ import retrofit2.Callback
 import retrofit2.Response
 import java.util.ArrayList
 
-class MainFragment : Fragment() {
+class MainFragment(map: HashMap<String, Any>) : Fragment() {
 
     val TAG = "로그"
 
@@ -35,6 +38,13 @@ class MainFragment : Fragment() {
     lateinit var job: Job
 
     lateinit var tabList : List<MainTabCodeVO>
+
+    var map : HashMap<String, Any> = HashMap()
+
+    init {
+        this.map = map
+    }
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -54,7 +64,7 @@ class MainFragment : Fragment() {
                         val viewPager = binding.viewPager
                         val tabLayout = binding.tabLayout
 
-                        viewPager.adapter = ViewPagerAdapter(parentFragmentManager, lifecycle, tabList)
+                        viewPager.adapter = ViewPagerAdapter(parentFragmentManager, lifecycle, tabList, map)
 
                         //대메뉴인 tabLayout과 소메뉴 뷰 페이지인 viewPager를 합쳐준다.
                         //소메뉴 뷰에 관한 건 viewPager에서 설정.
@@ -75,6 +85,21 @@ class MainFragment : Fragment() {
             })  //call.enqueue(object : Callback<String>
         }   //var job = coroutineScopeIO.launch
 
+        binding.tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener{
+            override fun onTabSelected(tab: TabLayout.Tab?) {
+                Log.d(TAG, "onTabSelected: 셀렉")
+            }
+
+            override fun onTabUnselected(tab: TabLayout.Tab?) {
+                Log.d(TAG, "onTabSelected: 셀렉 해제")
+            }
+
+            override fun onTabReselected(tab: TabLayout.Tab?) {
+                Log.d(TAG, "onTabSelected: 다시 셀렉")
+            }
+
+        })
+
         binding.back.setOnClickListener{
             val manager = activity?.supportFragmentManager
             manager?.beginTransaction()?.remove(this)?.commit()
@@ -82,7 +107,7 @@ class MainFragment : Fragment() {
         }
 
         binding.basket.setOnClickListener{
-            parentFragmentManager.beginTransaction().replace(R.id.container, BasketFragment()).commit()
+            parentFragmentManager.beginTransaction().replace(R.id.container, BasketFragment(map)).commit()
         }
 
         return binding.root
