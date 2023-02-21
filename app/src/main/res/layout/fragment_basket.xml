@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
+    android:id="@+id/basketLinearLayout"
     android:background="@color/white"
 
     xmlns:android="http://schemas.android.com/apk/res/android"
@@ -50,12 +51,21 @@
 
     </LinearLayout>
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/basketRecv"
+    <FrameLayout
+        android:id="@+id/basketFrameLayout"
 
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="9"/>
+        android:layout_weight="9">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/basketRecv"
+
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            />
+
+    </FrameLayout>
 
     <LinearLayout
         android:layout_width="match_parent"

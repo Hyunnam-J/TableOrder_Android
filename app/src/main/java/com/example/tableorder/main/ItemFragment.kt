@@ -1,13 +1,17 @@
 package com.example.tableorder.main
 
+import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.Toast
+import androidx.core.view.isInvisible
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.tableorder.R
 import com.example.tableorder.databinding.FragmentItemBinding
 import com.example.tableorder.retrofit.ApiClient
 import com.example.tableorder.retrofit.MainApiInterface
@@ -80,6 +84,11 @@ class ItemFragment(tabCodeVO: MainTabCodeVO, map: HashMap<String, Any>) : Fragme
         }   //var job = coroutineScopeIO.launch
         return binding.root
     }   //override fun onCreateView
+
+//    fun imageView() : ImageView{
+//        val imageView : ImageView
+//        return imageView()
+//    }
 
     override fun onDestroy() {
         super.onDestroy()

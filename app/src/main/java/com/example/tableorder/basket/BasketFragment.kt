@@ -43,13 +43,18 @@ class BasketFragment(map: HashMap<String, Any>) : Fragment() {
 
         basketList = map.values.toList() as List<BasketVO>
 
-        val adapter = BasketAdapter(requireContext(), map, basketList!!, this)
-        val manager = LinearLayoutManager(requireContext(), VERTICAL, false)
+        if(basketList!!.size == 0){
+            binding.basketLinearLayout.removeView(binding.basketRecv)
+            binding.basketFrameLayout.setBackgroundResource(R.drawable.ic_launcher_foreground)
+        }else{
+            val adapter = BasketAdapter(requireContext(), map, basketList!!, this)
+            val manager = LinearLayoutManager(requireContext(), VERTICAL, false)
 
-        binding.basketRecv.adapter = adapter
-        binding.basketRecv.layoutManager = manager
+            binding.basketRecv.adapter = adapter
+            binding.basketRecv.layoutManager = manager
 
-        calcTotalPrice()
+            calcTotalPrice()
+        }
 
         binding.order.setOnClickListener{
             //주문 로직

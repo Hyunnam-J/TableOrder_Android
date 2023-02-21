@@ -7,6 +7,7 @@ import android.content.res.Resources
 import android.graphics.Color
 import android.graphics.Point
 import android.os.Build
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.ViewGroup
