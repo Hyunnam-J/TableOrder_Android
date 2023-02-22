@@ -1,10 +1,14 @@
 package com.example.tableorder.basket
 
 import android.os.Bundle
+import android.view.Gravity
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.FrameLayout
+import android.widget.ImageView
+import android.widget.LinearLayout
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView.VERTICAL
 import com.example.tableorder.R
@@ -43,17 +47,11 @@ class BasketFragment(map: HashMap<String, Any>) : Fragment() {
 
         basketList = map.values.toList() as List<BasketVO>
 
-        if(basketList!!.size == 0){
-            binding.basketLinearLayout.removeView(binding.basketRecv)
-            binding.basketFrameLayout.setBackgroundResource(R.drawable.ic_launcher_foreground)
+        if(basketList!!.isEmpty()){
+            //binding.basketFrameLayout.removeView(binding.basketRecv)
+            binding.basketFrameLayout.addView(createImgv())
         }else{
-            val adapter = BasketAdapter(requireContext(), map, basketList!!, this)
-            val manager = LinearLayoutManager(requireContext(), VERTICAL, false)
-
-            binding.basketRecv.adapter = adapter
-            binding.basketRecv.layoutManager = manager
-
-            calcTotalPrice()
+            refreshBasketList()
         }
 
         binding.order.setOnClickListener{
@@ -73,6 +71,28 @@ class BasketFragment(map: HashMap<String, Any>) : Fragment() {
         }
 
         binding.totalPrice.text = NumberFormat.getCurrencyInstance(Locale.KOREA).format(Integer.parseInt(tempSum.toString()))
+    }
+
+    fun createImgv() : View{
+        val imgv = ImageView(requireContext())
+        imgv.setBackgroundResource(R.drawable.teong)
+        val lp = LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT)
+        //lp.gravity = Gravity.CENTER
+        imgv.layoutParams = lp
+        //imgv.id = ViewCompat.generateViewId()
+        return imgv
+    }
+
+    fun refreshBasketList(){
+        basketList = map.values.toList() as List<BasketVO>
+
+        val adapter = BasketAdapter(requireContext(), map, basketList!!, this)
+        val manager = LinearLayoutManager(requireContext(), VERTICAL, false)
+
+        binding.basketRecv.adapter = adapter
+        binding.basketRecv.layoutManager = manager
+
+        calcTotalPrice()
     }
 
     override fun onDestroy() {

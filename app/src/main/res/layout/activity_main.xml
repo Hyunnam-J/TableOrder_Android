@@ -11,7 +11,7 @@
 
     <ImageView
         android:id="@+id/enter"
-        android:background="@drawable/thumb"
+        android:background="@drawable/logo"
 
         android:layout_gravity="center"
 

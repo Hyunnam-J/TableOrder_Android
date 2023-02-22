@@ -45,6 +45,7 @@ class BasketAdapter(
 
         var addQuantity : Button
         var removeQuantity : Button
+        var cancelMenu : Button
 
         init {
             itemQuantity = binding.itemQuantity
@@ -52,6 +53,7 @@ class BasketAdapter(
             itemTotalPrice = binding.itemTotalPrice
             addQuantity = binding.addQuantity
             removeQuantity = binding.removeQuantity
+            cancelMenu = binding.cancelMenu
         }
     }
 
@@ -124,8 +126,10 @@ class BasketAdapter(
             basketFragment.calcTotalPrice()
         }   //h.removeQuantity.setOnClickListener
 
-
-
+        h.cancelMenu.setOnClickListener{
+            map.remove(basketList[i].itemCode)
+            basketFragment.refreshBasketList()
+        }
     }   //onBindViewHolder
 
     override fun getItemCount(): Int {
