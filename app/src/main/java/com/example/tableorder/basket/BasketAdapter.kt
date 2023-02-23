@@ -68,8 +68,6 @@ class BasketAdapter(
         h.itemTotalPrice.text =
             NumberFormat.getCurrencyInstance(Locale.KOREA).format(basketList[i].getuPrice() * basketList[i].quantity)
         h.addQuantity.setOnClickListener{
-            Log.d("로그", "onBindViewHolder: "+h.itemQuantity.text)
-            if(h.itemQuantity.text == "1개") h.removeQuantity.setBackgroundResource(R.drawable.ic_baseline_remove_circle_24)
 
             basketList[i].quantity = basketList[i].quantity+1
 
@@ -134,13 +132,16 @@ class BasketAdapter(
                 )   //BasketVO
             )   //map.replace
 
-            if(h.itemQuantity.text == "1개") h.removeQuantity.setBackgroundResource(R.drawable.ic_baseline_remove_circle_24_unactivate)
-
             basketFragment.calcTotalPrice()
         }   //h.removeQuantity.setOnClickListener
 
         h.cancelMenu.setOnClickListener{
             map.remove(basketList[i].itemCode)
+
+            if(map.size == 0){
+                basketFragment.displayImgv()
+            }
+
             basketFragment.refreshBasketList()
         }
     }   //onBindViewHolder

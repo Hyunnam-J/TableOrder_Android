@@ -1,6 +1,7 @@
 package com.example.tableorder.basket
 
 import android.os.Bundle
+import android.view.Gravity
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -60,13 +61,15 @@ class BasketFragment(map: HashMap<String, Any>) : Fragment() {
         basketList = map.values.toList() as List<BasketVO>
 
         if(basketList!!.isEmpty()){
-            //binding.basketFrameLayout.removeView(binding.basketRecv)
-            binding.basketFrameLayout.addView(createImgv())
+            displayImgv()
         }else{
             refreshBasketList()
         }
 
         binding.order.setOnClickListener{
+
+            if(basketList!!.isEmpty())return@setOnClickListener
+
             job = coroutineScopeIO.launch {
 
                 val call : Call<String> = apiInterface.order(SendOrderVO(basketList!!, 1, 0))
@@ -95,7 +98,6 @@ class BasketFragment(map: HashMap<String, Any>) : Fragment() {
                 })  //call.enqueue
             }   //job = coroutineScopeIO.launch
         }   //binding.order.setOnClickListener
-
         return binding.root
     }   //onCreateView
 
@@ -117,6 +119,10 @@ class BasketFragment(map: HashMap<String, Any>) : Fragment() {
         imgv.layoutParams = lp
         //imgv.id = ViewCompat.generateViewId()
         return imgv
+    }
+
+    public fun displayImgv(){
+        binding.basketFrameLayout.addView(createImgv())
     }
 
     fun refreshBasketList(){

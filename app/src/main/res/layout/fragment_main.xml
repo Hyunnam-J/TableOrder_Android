@@ -10,16 +10,21 @@
     tools:context=".main.MainFragment"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.2"/>
+
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/tabLayout"
         app:tabTextAppearance="@style/tabText"
 
         app:tabTextColor="#111"
-        app:tabSelectedTextColor="#fff"
+        app:tabSelectedTextColor="#FA0707"
         app:tabBackground="@drawable/tab_selector"
 
-        app:tabIndicatorColor="#fff"
-        app:tabIndicatorHeight="0dp"
+        app:tabIndicatorColor="#FA0707"
+        app:tabIndicatorHeight="2dp"
         app:tabIndicatorGravity="bottom"
 
         app:tabGravity="center"
@@ -36,7 +41,7 @@
 
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="5"
+        android:layout_weight="7"
         />
 
     <LinearLayout
@@ -54,7 +59,7 @@
             android:layout_weight="5"/>
 
         <androidx.appcompat.widget.AppCompatButton
-            style="@style/buttonText"
+            style="@style/buttonTextMinus"
             android:id="@+id/back"
             android:text="뒤로가기"
 
@@ -64,7 +69,7 @@
             />
 
         <androidx.appcompat.widget.AppCompatButton
-            style="@style/buttonText"
+            style="@style/buttonTextPlus"
             android:id="@+id/basket"
             android:text="장바구니"
 

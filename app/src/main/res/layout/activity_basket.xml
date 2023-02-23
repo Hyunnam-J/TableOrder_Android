@@ -41,6 +41,8 @@
         android:orientation="vertical">
 
         <LinearLayout
+            android:layout_marginBottom="15dp"
+
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="0.7"
@@ -54,19 +56,22 @@
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/itemCancel"
-                android:background="@drawable/ic_baseline_clear_24"
-                android:layout_marginRight="10dp"
-                android:layout_marginTop="10dp"
 
-                android:layout_width="30dp"
-                android:layout_height="30dp"
+                android:textColor="#111"
+                android:background="#fff"
+                android:textSize="30dp"
+                android:text="X"
+
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
                 />
 
         </LinearLayout>
 
         <View
-            android:background="#6A6969"
-            android:layout_marginTop="15dp"
+            android:background="#D1D0D0"
+
             android:layout_marginBottom="20dp"
 
             android:layout_width="match_parent"
@@ -75,12 +80,11 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-
             >
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/removeQuantity"
-                android:background="@drawable/ic_baseline_remove_circle_24_unactivate"
+                android:background="@drawable/ic_baseline_minus_box_24"
 
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -97,7 +101,7 @@
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/addQuantity"
-                android:background="@drawable/ic_baseline_add_circle_24"
+                android:background="@drawable/ic_baseline_add_box_24"
 
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -116,13 +120,13 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="5"/>
+            android:layout_weight="4"/>
 
         <androidx.appcompat.widget.AppCompatButton
             android:layout_margin="15dp"
-            style="@style/buttonText"
+            style="@style/buttonTextPlus"
             android:id="@+id/itemConfirm"
-            android:text="장바구니에 담기"
+            android:text="장바구니 담기"
 
             android:layout_width="match_parent"
             android:layout_height="0dp"

@@ -23,7 +23,7 @@
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/removeQuantity"
-        android:background="@drawable/ic_baseline_remove_circle_24_unactivate"
+        android:background="@drawable/ic_baseline_minus_box_24"
 
         android:layout_width="0dp"
         android:layout_height="match_parent"
@@ -41,7 +41,7 @@
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/addQuantity"
-        android:background="@drawable/ic_baseline_add_circle_24"
+        android:background="@drawable/ic_baseline_add_box_24"
 
         android:layout_width="0dp"
         android:layout_height="match_parent"
@@ -54,8 +54,9 @@
         android:layout_weight="0.8"/>
 
     <androidx.appcompat.widget.AppCompatButton
+        style="@style/buttonDeleteMenu"
         android:id="@+id/cancelMenu"
-        android:text="취소"
+        android:text="삭제"
 
         android:layout_width="0dp"
         android:layout_height="match_parent"

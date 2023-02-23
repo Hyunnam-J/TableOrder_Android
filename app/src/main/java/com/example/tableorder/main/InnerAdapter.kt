@@ -122,12 +122,9 @@ class InnerAdapter(
                                 ( Integer.parseInt(itemList[i].getuPrice().toString()) )
                                     * ( Integer.parseInt(itemQuantity.text.toString()) )
                             ).toString()
-
-                        if(itemQuantity.text == "1") removeQuantity.setBackgroundResource(R.drawable.ic_baseline_remove_circle_24_unactivate)
                     }
 
                     addQuantity.setOnClickListener{
-                        if(itemQuantity.text == "1") removeQuantity.setBackgroundResource(R.drawable.ic_baseline_remove_circle_24)
 
                         val temp = Integer.parseInt(itemQuantity.text.toString())+1
                         itemQuantity.text = temp.toString()
