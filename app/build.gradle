@@ -58,6 +58,9 @@ dependencies {
     // https://mvnrepository.com/artifact/com.squareup.retrofit2/converter-scalars
     implementation group: 'com.squareup.retrofit2', name: 'converter-scalars', version: '2.9.0'
 
+    // https://mvnrepository.com/artifact/com.squareup.retrofit2/converter-jackson
+    implementation group: 'com.squareup.retrofit2', name: 'converter-jackson', version: '2.9.0'
+
     //about recyclerview select
     implementation 'androidx.recyclerview:recyclerview:1.0.0'
     implementation 'androidx.recyclerview:recyclerview-selection:1.1.0-alpha06'

@@ -6,12 +6,19 @@ public class BasketVO extends MainItemVO {
 
 	int quantity;
 
-	public BasketVO(String comId, String pName, String itemName2, String pos, String pCode, String tabNo, String itemCode, String uPrice, String bColor) {
-		super(comId, pName, itemName2, pos, pCode, tabNo, itemCode, uPrice, bColor);
+	public BasketVO(String comId, String pName, String itemName1, String itemName2, String pos, String pCode,
+					String tabNo, String itemCode, String bColor, String tax, String subUse, String sex, String area,
+					String stockUse, int uPrice, int stock) {
+		super(comId, pName, itemName1, itemName2, pos, pCode, tabNo, itemCode, bColor, tax, subUse, sex, area, stockUse, uPrice,
+				stock);
+		// TODO Auto-generated constructor stub
 	}
 
-	public BasketVO(String comId, String pName, String itemName2, String pos, String pCode, String tabNo, String itemCode, String uPrice, String bColor, int quantity) {
-		super(comId, pName, itemName2, pos, pCode, tabNo, itemCode, uPrice, bColor);
+	public BasketVO(String comId, String pName, String itemName1, String itemName2, String pos, String pCode,
+					String tabNo, String itemCode, String bColor, String tax, String subUse, String sex, String area,
+					String stockUse, int uPrice, int stock, int quantity) {
+		super(comId, pName, itemName1, itemName2, pos, pCode, tabNo, itemCode, bColor, tax, subUse, sex, area, stockUse,
+				uPrice, stock);
 		this.quantity = quantity;
 	}
 

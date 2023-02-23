@@ -76,7 +76,7 @@ class InnerAdapter(
     override fun onBindViewHolder(h: InnerViewHolder, i: Int) {
 
         h.itemName.text = itemList[i].itemName2
-        h.uPrice.text = NumberFormat.getCurrencyInstance(Locale.KOREA).format(Integer.parseInt(itemList[i].getuPrice()))
+        h.uPrice.text = NumberFormat.getCurrencyInstance(Locale.KOREA).format(itemList[i].getuPrice())
 
         var url = URL("http://192.168.0.8/static/TableOrderItemImage/"+itemList[i].getbColor()+".png")
         Glide.with(context).load(url).into(h.itemImage)
@@ -109,7 +109,7 @@ class InnerAdapter(
                     var url = URL("http://192.168.0.8/static/TableOrderItemImage/"+itemList[i].getbColor()+".png")
                     Glide.with(context).load(url).into(dialogImage)
 
-                    itemPrice.text = NumberFormat.getCurrencyInstance(Locale.KOREA).format(Integer.parseInt(itemList[i].getuPrice()))
+                    itemPrice.text = NumberFormat.getCurrencyInstance(Locale.KOREA).format(itemList[i].getuPrice())
 
                     itemCancel.setOnClickListener{
                         dialog.dismiss()
@@ -149,13 +149,20 @@ class InnerAdapter(
                             map[itemList[i].itemCode] = BasketVO(
                                 itemList[i].comId,
                                 itemList[i].getpName(),
+                                itemList[i].itemName1,
                                 itemList[i].itemName2,
                                 itemList[i].pos,
                                 itemList[i].getpCode(),
                                 itemList[i].tabNo,
                                 itemList[i].itemCode,
-                                itemList[i].getuPrice(),
                                 itemList[i].getbColor(),
+                                itemList[i].tax,
+                                itemList[i].subUse,
+                                itemList[i].sex,
+                                itemList[i].area,
+                                itemList[i].stockUse,
+                                itemList[i].getuPrice(),
+                                itemList[i].stock,
                                 Integer.parseInt(itemQuantity.text.toString())
                             )   //map.put
                         }else{
@@ -168,13 +175,20 @@ class InnerAdapter(
                                 BasketVO(
                                     itemList[i].comId,
                                     itemList[i].getpName(),
+                                    itemList[i].itemName1,
                                     itemList[i].itemName2,
                                     itemList[i].pos,
                                     itemList[i].getpCode(),
                                     itemList[i].tabNo,
                                     itemList[i].itemCode,
-                                    itemList[i].getuPrice(),
                                     itemList[i].getbColor(),
+                                    itemList[i].tax,
+                                    itemList[i].subUse,
+                                    itemList[i].sex,
+                                    itemList[i].area,
+                                    itemList[i].stockUse,
+                                    itemList[i].getuPrice(),
+                                    itemList[i].stock,
                                     temp.quantity
                                             + Integer.parseInt(itemQuantity.text.toString())
                                 )   //BasketVO

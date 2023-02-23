@@ -1,17 +1,14 @@
 package com.example.tableorder.main
 
-import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import android.widget.Toast
-import androidx.core.view.isInvisible
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.tableorder.R
+import com.example.tableorder.MainActivity
 import com.example.tableorder.databinding.FragmentItemBinding
 import com.example.tableorder.retrofit.ApiClient
 import com.example.tableorder.retrofit.MainApiInterface
@@ -54,6 +51,8 @@ class ItemFragment(tabCodeVO: MainTabCodeVO, map: HashMap<String, Any>) : Fragme
     ): View? {
         _binding = FragmentItemBinding.inflate(inflater, container, false)
 
+        val context = requireContext()
+
         //소메뉴를 불러오고,
         job = coroutineScopeIO.launch {
             val call : Call<String> = apiInterface.itemMenu("003", tabCodeVO.getpCode(), "101")
@@ -65,30 +64,26 @@ class ItemFragment(tabCodeVO: MainTabCodeVO, map: HashMap<String, Any>) : Fragme
 
                         //불러온 소메뉴를 어댑터로 그려준다.
                         //그리는 과정은 innerAdapter에서.
-                        val innerAdapter = InnerAdapter(requireContext(), itemList, map)
-                        val innerManager = GridLayoutManager(requireContext(), 2, RecyclerView.HORIZONTAL, false)
+                        val innerAdapter = InnerAdapter(context, itemList, map)
+                        val innerManager = GridLayoutManager(context,2, RecyclerView.HORIZONTAL, false)
 
                         binding.innerRecv.adapter = innerAdapter
                         binding.innerRecv.layoutManager = innerManager
 
                     }else{
-                        Toast.makeText(requireContext(), "통신 에러", Toast.LENGTH_LONG)
+                        Toast.makeText(context, "통신 에러", Toast.LENGTH_LONG)
                     }
                     job.cancel()
                 }   //override fun onResponse(call: Call<String>, response: Response<String>)
 
                 override fun onFailure(call: Call<String>, t: Throwable) {
+                    Toast.makeText(context, "통신 에러", Toast.LENGTH_LONG)
                     job.cancel()
                 }
             })  //call.enqueue(object : Callback<String>
         }   //var job = coroutineScopeIO.launch
         return binding.root
     }   //override fun onCreateView
-
-//    fun imageView() : ImageView{
-//        val imageView : ImageView
-//        return imageView()
-//    }
 
     override fun onDestroy() {
         super.onDestroy()

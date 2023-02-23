@@ -67,7 +67,7 @@ class BasketAdapter(
         h.itemQuantity.text = basketList[i].quantity.toString()+"개"
         h.itemName.text = basketList[i].itemName2
         h.itemTotalPrice.text =
-            NumberFormat.getCurrencyInstance(Locale.KOREA).format(Integer.parseInt(basketList[i].getuPrice()) * basketList[i].quantity)
+            NumberFormat.getCurrencyInstance(Locale.KOREA).format(basketList[i].getuPrice() * basketList[i].quantity)
         h.addQuantity.setOnClickListener{
             Log.d("로그", "onBindViewHolder: "+h.itemQuantity.text)
             if(h.itemQuantity.text == "1개") h.removeQuantity.setBackgroundResource(R.drawable.ic_baseline_remove_circle_24)
@@ -76,20 +76,27 @@ class BasketAdapter(
 
             h.itemQuantity.text = basketList[i].quantity.toString()+"개"
             h.itemTotalPrice.text =
-                NumberFormat.getCurrencyInstance(Locale.KOREA).format(Integer.parseInt(basketList[i].getuPrice()) * basketList[i].quantity)
+                NumberFormat.getCurrencyInstance(Locale.KOREA).format(basketList[i].getuPrice() * basketList[i].quantity)
 
             map.replace(
                 basketList[i].itemCode,
                 BasketVO(
                     basketList[i].comId,
                     basketList[i].getpName(),
+                    basketList[i].itemName1,
                     basketList[i].itemName2,
                     basketList[i].pos,
                     basketList[i].getpCode(),
                     basketList[i].tabNo,
                     basketList[i].itemCode,
-                    basketList[i].getuPrice(),
                     basketList[i].getbColor(),
+                    basketList[i].tax,
+                    basketList[i].subUse,
+                    basketList[i].sex,
+                    basketList[i].area,
+                    basketList[i].stockUse,
+                    basketList[i].getuPrice(),
+                    basketList[i].stock,
                     basketList[i].quantity
                 )   //BasketVO
             )   //map.replace
@@ -103,20 +110,27 @@ class BasketAdapter(
             basketList[i].quantity = basketList[i].quantity-1
 
             h.itemQuantity.text = basketList[i].quantity.toString()+"개"
-            h.itemTotalPrice.text = ( Integer.parseInt(basketList[i].getuPrice()) * basketList[i].quantity ).toString()
+            h.itemTotalPrice.text = ( basketList[i].getuPrice() * basketList[i].quantity ).toString()
 
             map.replace(
                 basketList[i].itemCode,
                 BasketVO(
                     basketList[i].comId,
                     basketList[i].getpName(),
+                    basketList[i].itemName1,
                     basketList[i].itemName2,
                     basketList[i].pos,
                     basketList[i].getpCode(),
                     basketList[i].tabNo,
                     basketList[i].itemCode,
-                    basketList[i].getuPrice(),
                     basketList[i].getbColor(),
+                    basketList[i].tax,
+                    basketList[i].subUse,
+                    basketList[i].sex,
+                    basketList[i].area,
+                    basketList[i].stockUse,
+                    basketList[i].getuPrice(),
+                    basketList[i].stock,
                     basketList[i].quantity
                 )   //BasketVO
             )   //map.replace

@@ -1,21 +1,27 @@
 package com.example.tableorder.basket
 
 import android.os.Bundle
-import android.view.Gravity
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.LinearLayout
+import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView.VERTICAL
 import com.example.tableorder.R
 import com.example.tableorder.databinding.FragmentBasketBinding
 import com.example.tableorder.main.MainFragment
+import com.example.tableorder.retrofit.ApiClient
+import com.example.tableorder.retrofit.BasketApiInterface
 import com.example.tableorder.vo.basket.BasketVO
+import com.example.tableorder.vo.basket.SendOrderVO
 import com.google.gson.Gson
+import kotlinx.coroutines.*
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 import java.text.NumberFormat
 import java.util.*
 import kotlin.collections.HashMap
@@ -30,6 +36,11 @@ class BasketFragment(map: HashMap<String, Any>) : Fragment() {
     var map : HashMap<String, Any> = HashMap()
     var basketList : List<BasketVO>? = null
 
+    var coroutineScopeIO = CoroutineScope(Dispatchers.IO)
+    lateinit var job: Job
+    val apiInterface : BasketApiInterface = ApiClient.getApiClient().create(
+        BasketApiInterface::class.java)
+
     init {
         this.map = map
     }
@@ -40,6 +51,8 @@ class BasketFragment(map: HashMap<String, Any>) : Fragment() {
     ): View? {
 
         _binding = FragmentBasketBinding.inflate(inflater, container, false)
+
+        val context = requireContext()
 
         binding.back.setOnClickListener{
             parentFragmentManager.beginTransaction().replace(R.id.container, MainFragment(map)).commit()
@@ -55,10 +68,31 @@ class BasketFragment(map: HashMap<String, Any>) : Fragment() {
         }
 
         binding.order.setOnClickListener{
-            //주문 로직
-            val s = Gson().toJson(basketList)
-            val a = Gson().toJson(map)
-        }
+            job = coroutineScopeIO.launch {
+
+                val call : Call<String> = apiInterface.order(SendOrderVO(basketList!!, 1, 0))
+                call.enqueue(object : Callback<String>{
+                    override fun onResponse(call: Call<String>, response: Response<String>) {
+                        if(response.isSuccessful){
+//                            if(response.body()=="success"){
+//                                Toast.makeText(context, "주문이 완료되었습니다", Toast.LENGTH_LONG).show()
+//                            }else{
+//                                Toast.makeText(context, "통신 장애", Toast.LENGTH_SHORT).show()
+//                                Toast.makeText(context, "다시 주문해 주십시오", Toast.LENGTH_SHORT).show()
+//                            }
+                        }else{
+                            Toast.makeText(context, "통신 장애", Toast.LENGTH_LONG)
+                        }
+                        job.cancel()
+                    }   //onResponse
+
+                    override fun onFailure(call: Call<String>, t: Throwable) {
+                        Toast.makeText(context, "통신 장애", Toast.LENGTH_LONG)
+                        job.cancel()
+                    }
+                })  //call.enqueue
+            }   //job = coroutineScopeIO.launch
+        }   //binding.order.setOnClickListener
 
         return binding.root
     }   //onCreateView
@@ -67,7 +101,7 @@ class BasketFragment(map: HashMap<String, Any>) : Fragment() {
         var tempSum : Int = 0
 
         for(i in 0 until map.size){
-            tempSum += basketList!![i].quantity * Integer.parseInt(basketList!![i].getuPrice())
+            tempSum += basketList!![i].quantity * basketList!![i].getuPrice()
         }
 
         binding.totalPrice.text = NumberFormat.getCurrencyInstance(Locale.KOREA).format(Integer.parseInt(tempSum.toString()))

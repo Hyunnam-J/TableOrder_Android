@@ -1,6 +1,6 @@
 package com.example.tableorder.main
 
-import android.graphics.Color
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 
@@ -9,6 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import com.example.tableorder.MainActivity
 import com.example.tableorder.R
 import com.example.tableorder.basket.BasketFragment
 import com.example.tableorder.databinding.FragmentMainBinding
@@ -53,6 +54,11 @@ class MainFragment(map: HashMap<String, Any>) : Fragment() {
 
         _binding = FragmentMainBinding.inflate(inflater, container, false)
 
+        val viewPager = binding.viewPager
+        val tabLayout = binding.tabLayout
+
+        val context: Context = requireContext()
+
         //먼저 대메뉴를 불러오고,
         job = coroutineScopeIO.launch {
             val call : Call<String> = apiInterface.tabMenu("003", "1", "101")
@@ -60,9 +66,6 @@ class MainFragment(map: HashMap<String, Any>) : Fragment() {
                 override fun onResponse(call: Call<String>, response: Response<String>) {
                     if(response.isSuccessful){
                         tabList = Gson().fromJson(response.body(), object : TypeToken<ArrayList<MainTabCodeVO?>?>(){}.type)
-
-                        val viewPager = binding.viewPager
-                        val tabLayout = binding.tabLayout
 
                         viewPager.adapter = ViewPagerAdapter(parentFragmentManager, lifecycle, tabList, map)
 
@@ -73,19 +76,19 @@ class MainFragment(map: HashMap<String, Any>) : Fragment() {
                         }.attach()
 
                     }else{
-                        Toast.makeText(requireContext(), "통신 에러", Toast.LENGTH_LONG)
+                        Toast.makeText(context, "통신 에러", Toast.LENGTH_LONG)
                     }
                     job.cancel()
                 }   //override fun onResponse(call: Call<String>, response: Response<String>)
 
                 override fun onFailure(call: Call<String>, t: Throwable) {
-                    Toast.makeText(requireContext(), "통신 에러", Toast.LENGTH_LONG)
+                    Toast.makeText(context, "통신 에러", Toast.LENGTH_LONG)
                     job.cancel()
                 }
             })  //call.enqueue(object : Callback<String>
         }   //var job = coroutineScopeIO.launch
 
-        binding.tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener{
+        tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener{
             override fun onTabSelected(tab: TabLayout.Tab?) {
                 Log.d(TAG, "onTabSelected: 셀렉")
             }
@@ -97,8 +100,7 @@ class MainFragment(map: HashMap<String, Any>) : Fragment() {
             override fun onTabReselected(tab: TabLayout.Tab?) {
                 Log.d(TAG, "onTabSelected: 다시 셀렉")
             }
-
-        })
+        })  //binding.tabLayout.addOnTabSelectedListener
 
         binding.back.setOnClickListener{
             val manager = activity?.supportFragmentManager
