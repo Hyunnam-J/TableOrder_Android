@@ -9,7 +9,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import com.example.tableorder.MainActivity
 import com.example.tableorder.R
 import com.example.tableorder.basket.BasketFragment
 import com.example.tableorder.databinding.FragmentMainBinding

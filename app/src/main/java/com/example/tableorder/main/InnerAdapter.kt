@@ -3,18 +3,15 @@ package com.example.tableorder.main
 import android.annotation.SuppressLint
 import android.app.Dialog
 import android.content.Context
-import android.content.res.Resources
 import android.graphics.Color
 import android.graphics.Point
 import android.os.Build
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.ViewGroup
 import android.view.WindowManager
 import android.widget.*
 import androidx.annotation.RequiresApi
-import androidx.core.content.res.ResourcesCompat.getDrawable
 import androidx.recyclerview.widget.RecyclerView.Adapter
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.bumptech.glide.Glide
@@ -23,7 +20,6 @@ import com.example.tableorder.databinding.ItemRecvInnerBinding
 import com.example.tableorder.vo.basket.BasketVO
 import com.example.tableorder.vo.main.MainItemVO
 import java.net.URL
-import java.text.DecimalFormat
 import java.text.NumberFormat
 import java.util.Locale
 

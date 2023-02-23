@@ -4,7 +4,6 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Lifecycle
 import androidx.viewpager2.adapter.FragmentStateAdapter
-import com.example.tableorder.MainActivity
 import com.example.tableorder.vo.main.MainTabCodeVO
 
 class ViewPagerAdapter(

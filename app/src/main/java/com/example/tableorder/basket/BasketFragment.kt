@@ -17,7 +17,6 @@ import com.example.tableorder.retrofit.ApiClient
 import com.example.tableorder.retrofit.BasketApiInterface
 import com.example.tableorder.vo.basket.BasketVO
 import com.example.tableorder.vo.basket.SendOrderVO
-import com.google.gson.Gson
 import kotlinx.coroutines.*
 import retrofit2.Call
 import retrofit2.Callback
@@ -74,14 +73,17 @@ class BasketFragment(map: HashMap<String, Any>) : Fragment() {
                 call.enqueue(object : Callback<String>{
                     override fun onResponse(call: Call<String>, response: Response<String>) {
                         if(response.isSuccessful){
-//                            if(response.body()=="success"){
-//                                Toast.makeText(context, "주문이 완료되었습니다", Toast.LENGTH_LONG).show()
-//                            }else{
-//                                Toast.makeText(context, "통신 장애", Toast.LENGTH_SHORT).show()
-//                                Toast.makeText(context, "다시 주문해 주십시오", Toast.LENGTH_SHORT).show()
-//                            }
+                            if(response.body()=="success"){
+                                Toast.makeText(context, "주문이 완료되었습니다", Toast.LENGTH_LONG).show()
+                                parentFragmentManager.beginTransaction().replace(R.id.container, MainFragment(map)).commit()
+                            }else{
+                                Toast.makeText(context, "통신 장애", Toast.LENGTH_SHORT).show()
+                                Toast.makeText(context, "다시 주문해 주십시오", Toast.LENGTH_SHORT).show()
+                                parentFragmentManager.beginTransaction().replace(R.id.container, MainFragment(map)).commit()
+                            }
                         }else{
                             Toast.makeText(context, "통신 장애", Toast.LENGTH_LONG)
+                            parentFragmentManager.beginTransaction().replace(R.id.container, MainFragment(map)).commit()
                         }
                         job.cancel()
                     }   //onResponse
