@@ -14,6 +14,7 @@ import com.example.tableorder.basket.BasketFragment
 import com.example.tableorder.databinding.FragmentMainBinding
 import com.example.tableorder.retrofit.ApiClient
 import com.example.tableorder.retrofit.MainApiInterface
+import com.example.tableorder.setting.SettingFragment
 import com.example.tableorder.vo.main.MainTabCodeVO
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator

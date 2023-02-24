@@ -50,4 +50,10 @@
         <item name="android:textSize">20dp</item>
     </style>
 
+    <style name="settingValue" parent="quantityText">
+        <item name="android:padding">15dp</item>
+        <item name="backgroundTint">#A7A4A4</item>
+
+    </style>
+
 </resources>
