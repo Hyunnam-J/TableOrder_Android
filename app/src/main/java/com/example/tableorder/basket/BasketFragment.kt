@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.Toast
@@ -114,9 +115,16 @@ class BasketFragment(map: HashMap<String, Any>) : Fragment() {
     fun createImgv() : View{
         val imgv = ImageView(requireContext())
         imgv.setBackgroundResource(R.drawable.teong)
-        val lp = LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT)
-        //lp.gravity = Gravity.CENTER
+
+        val lp = FrameLayout.LayoutParams(
+            FrameLayout.LayoutParams.WRAP_CONTENT,
+            FrameLayout.LayoutParams.WRAP_CONTENT
+        ).apply {
+            gravity = Gravity.CENTER
+        }
+
         imgv.layoutParams = lp
+
         //imgv.id = ViewCompat.generateViewId()
         return imgv
     }
