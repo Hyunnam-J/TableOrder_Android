@@ -55,19 +55,10 @@ class SettingFragment(mainActivity: MainActivity) : Fragment(), View.OnClickList
         comId = pref.getString("comId", "").toString()
         pos = pref.getString("pos", "").toString()
 
-
-
-
-
         putMap()
 
         binding.buttonComId.setOnClickListener(this)
         binding.buttonPos.setOnClickListener(this)
-
-
-
-
-
 
         return binding.root
     }
@@ -108,10 +99,8 @@ class SettingFragment(mainActivity: MainActivity) : Fragment(), View.OnClickList
 
             editor?.putString(key, dialog.findViewById<EditText>(R.id.setValues).text.toString())
             editor?.commit()
+            removeFragment()
             dialog.dismiss()
-            refreshFragment(requireFragmentManager())
-
-
         }
 
     }   //showDialog()
@@ -131,11 +120,17 @@ class SettingFragment(mainActivity: MainActivity) : Fragment(), View.OnClickList
         dialog?.window?.attributes = params as WindowManager.LayoutParams
     }
 
-    fun refreshFragment(fragmentManager: FragmentManager) {
-        var ft: FragmentTransaction = fragmentManager.beginTransaction()
-        ft.detach(this).attach(this).commit()
+//    fun refreshFragment(fragmentManager: FragmentManager) {
+//
+//        var ft: FragmentTransaction = fragmentManager.beginTransaction()
+//        ft.detach(this).attach(this).commit()
+//
+//    }
 
-
+    fun removeFragment(){
+        val manager = activity?.supportFragmentManager
+        manager?.beginTransaction()?.remove(this)?.commit()
+        manager?.popBackStack()
     }
 
     override fun onDestroy() {
