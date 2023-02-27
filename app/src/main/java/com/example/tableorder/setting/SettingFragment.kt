@@ -6,6 +6,7 @@ import android.content.SharedPreferences
 import android.graphics.Point
 import android.os.Bundle
 import android.text.Editable
+import android.util.Log
 import android.view.*
 import android.widget.Button
 import android.widget.EditText
@@ -40,6 +41,8 @@ class SettingFragment() : Fragment(), View.OnClickListener {
                               savedInstanceState: Bundle?): View? {
 
         _binding = FragmentSettingBinding.inflate(inflater, container, false)
+
+        Log.d(TAG, "onCreateView: 뉴뉴뉴")
 
         setting()
         putMap()
@@ -100,9 +103,10 @@ class SettingFragment() : Fragment(), View.OnClickListener {
 
             editor?.putString(key, dialog.findViewById<EditText>(R.id.setValues).text.toString())
             editor?.commit()
-//            refreshFragment(requireFragmentManager())
-            removeFragment()
+
+            refreshFragment(requireFragmentManager())
             dialog.dismiss()
+
         }
 
     }   //showDialog()
@@ -123,17 +127,14 @@ class SettingFragment() : Fragment(), View.OnClickListener {
     }
 
     fun refreshFragment(fragmentManager: FragmentManager) {
-
-        putMap()
-        var ft: FragmentTransaction = fragmentManager.beginTransaction()
-        ft.detach(this).attach(this).commit()
-
+        val ft: FragmentTransaction = fragmentManager.beginTransaction()
+        ft.detach(this).commit()
+        attachFragment(fragmentManager)
     }
 
-    fun removeFragment(){
-        val manager = activity?.supportFragmentManager
-        manager?.beginTransaction()?.remove(this)?.commit()
-        manager?.popBackStack()
+    fun attachFragment(fragmentManager: FragmentManager){
+        val ft: FragmentTransaction = fragmentManager.beginTransaction()
+        ft.attach(this).commit()
     }
 
     override fun onDestroy() {
