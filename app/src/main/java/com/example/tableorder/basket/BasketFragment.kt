@@ -93,23 +93,6 @@ class BasketFragment(map: HashMap<String, Any>) : Fragment() {
                                 manager?.beginTransaction()?.remove(this@BasketFragment)?.commit()
                                 manager?.popBackStack()
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
                             }else{
                                 Toast.makeText(context, "통신 장애", Toast.LENGTH_SHORT).show()
                                 Toast.makeText(context, "다시 주문해 주십시오", Toast.LENGTH_SHORT).show()

@@ -2,6 +2,7 @@ package com.example.tableorder
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.animation.AnimationUtils
 import com.example.tableorder.databinding.ActivityMainBinding
 import com.example.tableorder.main.MainFragment
 import com.example.tableorder.setting.SettingFragment
@@ -16,6 +17,10 @@ class MainActivity() : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        val animMain = AnimationUtils.loadAnimation(this, R.anim.anim_main)
+        binding.enter.startAnimation(animMain)
+
 
         //화면을 누르면 메뉴를 선택하는 메인 프래그먼트로 이동.
         binding.enter.setOnClickListener{
