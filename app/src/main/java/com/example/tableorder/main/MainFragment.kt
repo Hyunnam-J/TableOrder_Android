@@ -46,7 +46,6 @@ class MainFragment(map: HashMap<String, Any>) : Fragment() {
         this.map = map
     }
 
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -55,13 +54,14 @@ class MainFragment(map: HashMap<String, Any>) : Fragment() {
         _binding = FragmentMainBinding.inflate(inflater, container, false)
 
         val viewPager = binding.viewPager
+//        viewPager.isUserInputEnabled = false    //뷰페이저 스크롤 차단
         val tabLayout = binding.tabLayout
 
         val context: Context = requireContext()
 
         //먼저 대메뉴를 불러오고,
         job = coroutineScopeIO.launch {
-            val call : Call<String> = apiInterface.tabMenu("003", "1", "101")
+            val call : Call<String> = apiInterface.tabMenu(SettingFragment.comId, "1", SettingFragment.pos)
             call.enqueue(object : Callback<String>{
                 override fun onResponse(call: Call<String>, response: Response<String>) {
                     if(response.isSuccessful){
@@ -103,6 +103,8 @@ class MainFragment(map: HashMap<String, Any>) : Fragment() {
         })  //binding.tabLayout.addOnTabSelectedListener
 
         binding.back.setOnClickListener{
+            map.clear()
+
             val manager = activity?.supportFragmentManager
             manager?.beginTransaction()?.remove(this)?.commit()
             manager?.popBackStack()

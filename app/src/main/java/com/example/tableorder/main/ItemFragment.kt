@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.tableorder.databinding.FragmentItemBinding
 import com.example.tableorder.retrofit.ApiClient
 import com.example.tableorder.retrofit.MainApiInterface
+import com.example.tableorder.setting.SettingFragment
 import com.example.tableorder.vo.main.MainItemVO
 import com.example.tableorder.vo.main.MainTabCodeVO
 import com.google.gson.Gson
@@ -52,9 +53,11 @@ class ItemFragment(tabCodeVO: MainTabCodeVO, map: HashMap<String, Any>) : Fragme
 
         val context = requireContext()
 
+        val settingFragment = SettingFragment
+
         //소메뉴를 불러오고,
         job = coroutineScopeIO.launch {
-            val call : Call<String> = apiInterface.itemMenu("003", tabCodeVO.getpCode(), "101")
+            val call : Call<String> = apiInterface.itemMenu(settingFragment.comId, tabCodeVO.getpCode(), settingFragment.pos)
             call.enqueue(object : Callback<String> {
                 override fun onResponse(call: Call<String>, response: Response<String>) {
                     if(response.isSuccessful){
@@ -64,10 +67,18 @@ class ItemFragment(tabCodeVO: MainTabCodeVO, map: HashMap<String, Any>) : Fragme
                         //불러온 소메뉴를 어댑터로 그려준다.
                         //그리는 과정은 innerAdapter에서.
                         val innerAdapter = InnerAdapter(context, itemList, map)
-                        val innerManager = GridLayoutManager(context,2, RecyclerView.HORIZONTAL, false)
 
-                        binding.innerRecv.adapter = innerAdapter
-                        binding.innerRecv.layoutManager = innerManager
+                        if(itemList.size < 5){
+                            val innerManager = GridLayoutManager(context, 1, RecyclerView.HORIZONTAL, false)
+
+                            binding.innerRecv.adapter = innerAdapter
+                            binding.innerRecv.layoutManager = innerManager
+                        }else{
+                            val innerManager = GridLayoutManager(context, 4, RecyclerView.VERTICAL, false)
+
+                            binding.innerRecv.adapter = innerAdapter
+                            binding.innerRecv.layoutManager = innerManager
+                        }
 
                     }else{
                         Toast.makeText(context, "통신 에러", Toast.LENGTH_LONG)

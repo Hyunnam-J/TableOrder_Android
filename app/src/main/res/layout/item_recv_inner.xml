@@ -10,6 +10,7 @@
 
     <ImageView
         android:id="@+id/itemImage"
+        android:layout_marginBottom="15dp"
 
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -21,7 +22,7 @@
 
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="2"/>
+        android:layout_weight="1"/>
 
     <TextView
         style="@style/mainRecvPriceText"
@@ -29,6 +30,6 @@
 
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="2"/>
+        android:layout_weight="1"/>
 
 </LinearLayout>

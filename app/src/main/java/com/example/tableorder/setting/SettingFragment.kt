@@ -6,10 +6,11 @@ import android.content.SharedPreferences
 import android.graphics.Point
 import android.os.Bundle
 import android.text.Editable
-import android.util.Log
 import android.view.*
 import android.widget.Button
 import android.widget.EditText
+import android.widget.TextView
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
@@ -17,45 +18,39 @@ import com.example.tableorder.MainActivity
 import com.example.tableorder.R
 import com.example.tableorder.databinding.FragmentSettingBinding
 
-class SettingFragment(mainActivity: MainActivity) : Fragment(), View.OnClickListener {
+class SettingFragment() : Fragment(), View.OnClickListener {
 
     private val TAG = "로그"
 
     private var _binding : FragmentSettingBinding? = null
     private val binding get() = _binding!!
 
-    val mainActivity : MainActivity
-
     lateinit var pref : SharedPreferences
     lateinit var editor : SharedPreferences.Editor
 
-    init {
-        this.mainActivity = mainActivity
-    }
-
-    val dialog = Dialog(mainActivity)
+    lateinit var dialog : Dialog
 
     companion object{
 
+        var comId : String = ""
+        var pos : String = ""
     }
-
-    lateinit var comId : String
-    lateinit var pos : String
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
 
         _binding = FragmentSettingBinding.inflate(inflater, container, false)
 
-        //변수 값 저장을 위한 세팅
-        pref = activity?.getSharedPreferences("pref", 0)!!
-        editor = pref?.edit()!!
-
-        //시작 후 저장된 값을 불러온다
-        comId = pref.getString("comId", "").toString()
-        pos = pref.getString("pos", "").toString()
-
+        setting()
         putMap()
+
+        dialog = context?.let { Dialog(it) }!!
+
+        binding.back.setOnClickListener{
+            val manager = activity?.supportFragmentManager
+            manager?.beginTransaction()?.remove(this)?.commit()
+            manager?.popBackStack()
+        }
 
         binding.buttonComId.setOnClickListener(this)
         binding.buttonPos.setOnClickListener(this)
@@ -66,30 +61,36 @@ class SettingFragment(mainActivity: MainActivity) : Fragment(), View.OnClickList
     fun putMap(){
         binding.textComId.text = comId
         binding.textPos.text = pos
-
     }
 
     override fun onClick(v: View?) {
         when(v?.id){
 
-            R.id.buttonComId -> showDialog("comId", comId)
-            R.id.buttonPos -> showDialog("pos", pos)
+            R.id.buttonComId -> showDialog("Com ID", comId)
+            R.id.buttonPos -> showDialog("Pos", pos)
 
-            R.id.settingCancel -> dialog.dismiss()
-            R.id.settingConfirm -> {
-
-                putMap()
-                dialog.dismiss()
-            }
+            R.id.settingCancel -> dialog!!.dismiss()
 
         }   //when
     }   //override fun onClick(v: View?)
 
+    fun setting(){
+        //변수 값 저장을 위한 세팅
+        pref = activity?.getSharedPreferences("pref", 0)!!
+        editor = pref?.edit()!!
+
+        //시작 후 저장된 값을 불러온다
+        comId = pref.getString("Com ID", "").toString()
+        pos = pref.getString("Pos", "").toString()
+    }
+
     fun showDialog(key : String, value : String){
 
-        dialog.setContentView(R.layout.activity_setting_dialog)
+        dialog!!.setContentView(R.layout.activity_setting_dialog)
         sizingSettingDialog()
         dialog.show()
+
+        dialog.findViewById<TextView>(R.id.settingName).text = key + " :"
 
         dialog.findViewById<EditText>(R.id.setValues).text =
             Editable.Factory.getInstance().newEditable(value)
@@ -99,6 +100,7 @@ class SettingFragment(mainActivity: MainActivity) : Fragment(), View.OnClickList
 
             editor?.putString(key, dialog.findViewById<EditText>(R.id.setValues).text.toString())
             editor?.commit()
+//            refreshFragment(requireFragmentManager())
             removeFragment()
             dialog.dismiss()
         }
@@ -116,16 +118,17 @@ class SettingFragment(mainActivity: MainActivity) : Fragment(), View.OnClickList
         val deviceHeight = size.y
 
         params?.width = (deviceWidth * 0.7).toInt()
-        params?.height = (deviceHeight * 0.3).toInt()
+        params?.height = (deviceHeight * 0.2).toInt()
         dialog?.window?.attributes = params as WindowManager.LayoutParams
     }
 
-//    fun refreshFragment(fragmentManager: FragmentManager) {
-//
-//        var ft: FragmentTransaction = fragmentManager.beginTransaction()
-//        ft.detach(this).attach(this).commit()
-//
-//    }
+    fun refreshFragment(fragmentManager: FragmentManager) {
+
+        putMap()
+        var ft: FragmentTransaction = fragmentManager.beginTransaction()
+        ft.detach(this).attach(this).commit()
+
+    }
 
     fun removeFragment(){
         val manager = activity?.supportFragmentManager

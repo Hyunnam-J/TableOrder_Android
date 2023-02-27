@@ -19,13 +19,20 @@ class MainActivity() : AppCompatActivity() {
 
         //화면을 누르면 메뉴를 선택하는 메인 프래그먼트로 이동.
         binding.enter.setOnClickListener{
+
+            //먼저 세팅 프래그먼트를 연결해서(실행시켜서) 설정 값을 세팅한다
+            supportFragmentManager.beginTransaction()
+                .replace(binding.container.id, SettingFragment()).commit()
+
+            //그리고 세팅된 설정 값으로 뷰를 불러온다
             supportFragmentManager.beginTransaction()
                 .replace(binding.container.id, MainFragment(map)).commit()
-        }
+
+        }   //binding.enter.setOnClickListener
 
         binding.setting.setOnClickListener{
             supportFragmentManager.beginTransaction()
-                .replace(binding.container.id, SettingFragment(this)).commit()
+                .replace(binding.container.id, SettingFragment()).commit()
         }
     }   //onCreate
 }   //class

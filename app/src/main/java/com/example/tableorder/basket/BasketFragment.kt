@@ -69,7 +69,10 @@ class BasketFragment(map: HashMap<String, Any>) : Fragment() {
 
         binding.order.setOnClickListener{
 
-            if(basketList!!.isEmpty())return@setOnClickListener
+            if(basketList!!.isEmpty()){
+                Toast.makeText(context, "장바구니에 물건이 없습니다", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
 
             job = coroutineScopeIO.launch {
 
@@ -79,7 +82,34 @@ class BasketFragment(map: HashMap<String, Any>) : Fragment() {
                         if(response.isSuccessful){
                             if(response.body()=="success"){
                                 Toast.makeText(context, "주문이 완료되었습니다", Toast.LENGTH_LONG).show()
-                                parentFragmentManager.beginTransaction().replace(R.id.container, MainFragment(map)).commit()
+
+                                //프린트
+
+                                //장바구니 비우고
+                                map.clear()
+
+                                //프래그먼트 지운다
+                                val manager = activity?.supportFragmentManager
+                                manager?.beginTransaction()?.remove(this@BasketFragment)?.commit()
+                                manager?.popBackStack()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
                             }else{
                                 Toast.makeText(context, "통신 장애", Toast.LENGTH_SHORT).show()
                                 Toast.makeText(context, "다시 주문해 주십시오", Toast.LENGTH_SHORT).show()

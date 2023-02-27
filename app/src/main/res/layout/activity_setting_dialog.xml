@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
+    android:gravity="center"
+
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -26,13 +28,14 @@
             />
 
         <EditText
+            style="@style/settingValue"
+            android:gravity="left"
+            android:textColor="#A3A2A2"
             android:id="@+id/setValues"
 
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="3"
-
-            android:textColorHint="#A3A2A2"
             />
 
         <View

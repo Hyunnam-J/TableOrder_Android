@@ -15,6 +15,8 @@
         android:text="장바구니"
         android:textStyle="bold"
         android:textSize="40dp"
+        android:textColor="#111"
+        android:letterSpacing="0.3"
 
         android:layout_width="match_parent"
         android:layout_height="0dp"

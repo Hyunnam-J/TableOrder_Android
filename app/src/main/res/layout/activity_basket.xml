@@ -22,10 +22,72 @@
             android:layout_height="0dp"
             android:layout_weight="2"/>
 
+        <LinearLayout
+            android:layout_marginBottom="25dp"
+
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.01"
+
+            android:orientation="horizontal">
+
+            <View
+                android:background="#fff"
+
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.2"
+                />
+
+            <View
+                android:background="#D1D0D0"
+
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="2"
+                />
+
+        </LinearLayout>
+
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.5"
+            android:orientation="horizontal">
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.2"/>
+
+            <TextView
+                style="@style/putBasketText"
+                android:gravity="left"
+
+                android:id="@+id/itemNameInDialog"
+
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"/>
+
+            <TextView
+                style="@style/putBasketText"
+                android:gravity="right"
+
+                android:id="@+id/itemPriceInDialog"
+
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"/>
+
+        </LinearLayout>
+
         <View
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="1"/>
+            android:layout_weight="0.5"/>
 
     </LinearLayout>
 
@@ -51,19 +113,18 @@
             <View
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="5"
+                android:layout_weight="7"
                 />
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/itemCancel"
 
-                android:textColor="#111"
-                android:background="#fff"
-                android:textSize="30dp"
-                android:text="X"
+                android:background="@drawable/ic_baseline_clear_24"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="10dp"
 
                 android:layout_width="0dp"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_weight="1"
                 />
 
