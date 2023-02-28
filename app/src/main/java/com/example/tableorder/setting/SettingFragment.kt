@@ -6,16 +6,13 @@ import android.content.SharedPreferences
 import android.graphics.Point
 import android.os.Bundle
 import android.text.Editable
-import android.util.Log
 import android.view.*
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
-import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
-import com.example.tableorder.MainActivity
 import com.example.tableorder.R
 import com.example.tableorder.databinding.FragmentSettingBinding
 
@@ -41,8 +38,6 @@ class SettingFragment() : Fragment(), View.OnClickListener {
                               savedInstanceState: Bundle?): View? {
 
         _binding = FragmentSettingBinding.inflate(inflater, container, false)
-
-        Log.d(TAG, "onCreateView: 뉴뉴뉴")
 
         setting()
         putMap()
@@ -127,14 +122,11 @@ class SettingFragment() : Fragment(), View.OnClickListener {
     }
 
     fun refreshFragment(fragmentManager: FragmentManager) {
-        val ft: FragmentTransaction = fragmentManager.beginTransaction()
-        ft.detach(this).commit()
-        attachFragment(fragmentManager)
-    }
+        val detachFragment: FragmentTransaction = fragmentManager.beginTransaction()
+        detachFragment.detach(this).commit()
 
-    fun attachFragment(fragmentManager: FragmentManager){
-        val ft: FragmentTransaction = fragmentManager.beginTransaction()
-        ft.attach(this).commit()
+        val attachFragment: FragmentTransaction = fragmentManager.beginTransaction()
+        attachFragment.attach(this).commit()
     }
 
     override fun onDestroy() {

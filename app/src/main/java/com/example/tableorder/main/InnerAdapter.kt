@@ -11,7 +11,6 @@ import android.os.Build
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.view.WindowManager
-import android.view.animation.AnimationUtils
 import android.widget.*
 import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.RecyclerView.Adapter
@@ -78,132 +77,6 @@ class InnerAdapter(
 
         var url = URL("http://192.168.0.8/static/TableOrderItemImage/"+itemList[i].getbColor()+".png")
         Glide.with(context).load(url).into(h.itemImage)
-
-//        h.menu.setOnTouchListener { v, event ->
-//            when (event?.action) {
-//                MotionEvent.ACTION_DOWN -> {
-//                    h.menu.setBackgroundColor(Color.parseColor("#75ABB8"))
-//                }
-//                else -> {
-//                    h.menu.setBackgroundColor(Color.WHITE)
-//
-//                    //장바구니 추가를 위해 액티비티를 띄운다
-//                    dialog = Dialog(context)
-//
-//                    dialog.setContentView(R.layout.activity_basket)
-//                    dialog.show()
-//
-//                    //화면 해상도를 가져와서 비율로 다이얼로그 크기 조절
-//                    dialogSizing()
-//
-//                    val itemPrice = dialog.findViewById<TextView>(R.id.itemPrice)
-//                    val itemCancel = dialog.findViewById<Button>(R.id.itemCancel)
-//                    val removeQuantity = dialog.findViewById<Button>(R.id.removeQuantity)
-//                    val addQuantity = dialog.findViewById<Button>(R.id.addQuantity)
-//                    val itemQuantity = dialog.findViewById<TextView>(R.id.itemQuantity)
-//                    val itemConfirm = dialog.findViewById<Button>(R.id.itemConfirm)
-//                    val dialogImage = dialog.findViewById<ImageView>(R.id.dialogImage)
-//                    val itemNameInDialog = dialog.findViewById<TextView>(R.id.itemNameInDialog)
-//                    val itemPriceInDialog = dialog.findViewById<TextView>(R.id.itemPriceInDialog)
-//
-//                    var url = URL("http://192.168.0.8/static/TableOrderItemImage/"+itemList[i].getbColor()+".png")
-//                    Glide.with(context).load(url).into(dialogImage)
-//
-//                    itemNameInDialog.text = itemList[i].itemName2
-//                    itemPriceInDialog.text = NumberFormat.getCurrencyInstance(Locale.KOREA).format(itemList[i].getuPrice())
-//
-//
-//                    itemPrice.text = NumberFormat.getCurrencyInstance(Locale.KOREA).format(itemList[i].getuPrice())
-//
-//                    itemCancel.setOnClickListener{
-//                        dialog.dismiss()
-//                    }
-//
-//                    removeQuantity.setOnClickListener{
-//                        if(itemQuantity.text == "1") return@setOnClickListener
-//
-//                        val temp = Integer.parseInt(itemQuantity.text.toString())-1
-//                        itemQuantity.text = temp.toString()
-//
-//                        itemPrice.text =
-//                            (
-//                                ( Integer.parseInt(itemList[i].getuPrice().toString()) )
-//                                    * ( Integer.parseInt(itemQuantity.text.toString()) )
-//                            ).toString()
-//                    }
-//
-//                    addQuantity.setOnClickListener{
-//
-//                        val temp = Integer.parseInt(itemQuantity.text.toString())+1
-//                        itemQuantity.text = temp.toString()
-//
-//                        itemPrice.text =
-//                            (
-//                                ( Integer.parseInt(itemList[i].getuPrice().toString()) )
-//                                    * ( Integer.parseInt(itemQuantity.text.toString()) )
-//                            ).toString()
-//                    }
-//
-//                    itemConfirm.setOnClickListener{
-//
-//                        if(map[itemList[i].itemCode] == null){
-//                            map[itemList[i].itemCode] = BasketVO(
-//                                itemList[i].comId,
-//                                itemList[i].getpName(),
-//                                itemList[i].itemName1,
-//                                itemList[i].itemName2,
-//                                itemList[i].pos,
-//                                itemList[i].getpCode(),
-//                                itemList[i].tabNo,
-//                                itemList[i].itemCode,
-//                                itemList[i].getbColor(),
-//                                itemList[i].tax,
-//                                itemList[i].subUse,
-//                                itemList[i].sex,
-//                                itemList[i].area,
-//                                itemList[i].stockUse,
-//                                itemList[i].getuPrice(),
-//                                itemList[i].stock,
-//                                Integer.parseInt(itemQuantity.text.toString())
-//                            )   //map.put
-//                        }else{
-//
-//                            //다른 메뉴를 고르고 다시 돌아올 수 있으니까 전 개수를 더해주기 위해 임시 변수 이용
-//                            var temp : BasketVO = map[itemList[i].itemCode] as BasketVO
-//
-//                            map.replace(
-//                                itemList[i].itemCode,
-//                                BasketVO(
-//                                    itemList[i].comId,
-//                                    itemList[i].getpName(),
-//                                    itemList[i].itemName1,
-//                                    itemList[i].itemName2,
-//                                    itemList[i].pos,
-//                                    itemList[i].getpCode(),
-//                                    itemList[i].tabNo,
-//                                    itemList[i].itemCode,
-//                                    itemList[i].getbColor(),
-//                                    itemList[i].tax,
-//                                    itemList[i].subUse,
-//                                    itemList[i].sex,
-//                                    itemList[i].area,
-//                                    itemList[i].stockUse,
-//                                    itemList[i].getuPrice(),
-//                                    itemList[i].stock,
-//                                    temp.quantity
-//                                            + Integer.parseInt(itemQuantity.text.toString())
-//                                )   //BasketVO
-//                            )   //map.replace
-//                        }   //if-else
-//
-//                        dialog.dismiss()
-//
-//                    }   //itemConfirm.setOnClickListener
-//               }    //when - else
-//            }   //when event?.action
-//            //리턴값이 false면 seekbar 동작 안됨
-//            true //or false
-//        }   //menu.setOnTouchListener
 
         h.menu.setOnClickListener{
 
@@ -362,3 +235,132 @@ class InnerAdapter(
     }
 
 }   //OuterAdapter-class
+
+
+
+
+//        h.menu.setOnTouchListener { v, event ->
+//            when (event?.action) {
+//                MotionEvent.ACTION_DOWN -> {
+//                    h.menu.setBackgroundColor(Color.parseColor("#75ABB8"))
+//                }
+//                else -> {
+//                    h.menu.setBackgroundColor(Color.WHITE)
+//
+//                    //장바구니 추가를 위해 액티비티를 띄운다
+//                    dialog = Dialog(context)
+//
+//                    dialog.setContentView(R.layout.activity_basket)
+//                    dialog.show()
+//
+//                    //화면 해상도를 가져와서 비율로 다이얼로그 크기 조절
+//                    dialogSizing()
+//
+//                    val itemPrice = dialog.findViewById<TextView>(R.id.itemPrice)
+//                    val itemCancel = dialog.findViewById<Button>(R.id.itemCancel)
+//                    val removeQuantity = dialog.findViewById<Button>(R.id.removeQuantity)
+//                    val addQuantity = dialog.findViewById<Button>(R.id.addQuantity)
+//                    val itemQuantity = dialog.findViewById<TextView>(R.id.itemQuantity)
+//                    val itemConfirm = dialog.findViewById<Button>(R.id.itemConfirm)
+//                    val dialogImage = dialog.findViewById<ImageView>(R.id.dialogImage)
+//                    val itemNameInDialog = dialog.findViewById<TextView>(R.id.itemNameInDialog)
+//                    val itemPriceInDialog = dialog.findViewById<TextView>(R.id.itemPriceInDialog)
+//
+//                    var url = URL("http://192.168.0.8/static/TableOrderItemImage/"+itemList[i].getbColor()+".png")
+//                    Glide.with(context).load(url).into(dialogImage)
+//
+//                    itemNameInDialog.text = itemList[i].itemName2
+//                    itemPriceInDialog.text = NumberFormat.getCurrencyInstance(Locale.KOREA).format(itemList[i].getuPrice())
+//
+//
+//                    itemPrice.text = NumberFormat.getCurrencyInstance(Locale.KOREA).format(itemList[i].getuPrice())
+//
+//                    itemCancel.setOnClickListener{
+//                        dialog.dismiss()
+//                    }
+//
+//                    removeQuantity.setOnClickListener{
+//                        if(itemQuantity.text == "1") return@setOnClickListener
+//
+//                        val temp = Integer.parseInt(itemQuantity.text.toString())-1
+//                        itemQuantity.text = temp.toString()
+//
+//                        itemPrice.text =
+//                            (
+//                                ( Integer.parseInt(itemList[i].getuPrice().toString()) )
+//                                    * ( Integer.parseInt(itemQuantity.text.toString()) )
+//                            ).toString()
+//                    }
+//
+//                    addQuantity.setOnClickListener{
+//
+//                        val temp = Integer.parseInt(itemQuantity.text.toString())+1
+//                        itemQuantity.text = temp.toString()
+//
+//                        itemPrice.text =
+//                            (
+//                                ( Integer.parseInt(itemList[i].getuPrice().toString()) )
+//                                    * ( Integer.parseInt(itemQuantity.text.toString()) )
+//                            ).toString()
+//                    }
+//
+//                    itemConfirm.setOnClickListener{
+//
+//                        if(map[itemList[i].itemCode] == null){
+//                            map[itemList[i].itemCode] = BasketVO(
+//                                itemList[i].comId,
+//                                itemList[i].getpName(),
+//                                itemList[i].itemName1,
+//                                itemList[i].itemName2,
+//                                itemList[i].pos,
+//                                itemList[i].getpCode(),
+//                                itemList[i].tabNo,
+//                                itemList[i].itemCode,
+//                                itemList[i].getbColor(),
+//                                itemList[i].tax,
+//                                itemList[i].subUse,
+//                                itemList[i].sex,
+//                                itemList[i].area,
+//                                itemList[i].stockUse,
+//                                itemList[i].getuPrice(),
+//                                itemList[i].stock,
+//                                Integer.parseInt(itemQuantity.text.toString())
+//                            )   //map.put
+//                        }else{
+//
+//                            //다른 메뉴를 고르고 다시 돌아올 수 있으니까 전 개수를 더해주기 위해 임시 변수 이용
+//                            var temp : BasketVO = map[itemList[i].itemCode] as BasketVO
+//
+//                            map.replace(
+//                                itemList[i].itemCode,
+//                                BasketVO(
+//                                    itemList[i].comId,
+//                                    itemList[i].getpName(),
+//                                    itemList[i].itemName1,
+//                                    itemList[i].itemName2,
+//                                    itemList[i].pos,
+//                                    itemList[i].getpCode(),
+//                                    itemList[i].tabNo,
+//                                    itemList[i].itemCode,
+//                                    itemList[i].getbColor(),
+//                                    itemList[i].tax,
+//                                    itemList[i].subUse,
+//                                    itemList[i].sex,
+//                                    itemList[i].area,
+//                                    itemList[i].stockUse,
+//                                    itemList[i].getuPrice(),
+//                                    itemList[i].stock,
+//                                    temp.quantity
+//                                            + Integer.parseInt(itemQuantity.text.toString())
+//                                )   //BasketVO
+//                            )   //map.replace
+//                        }   //if-else
+//
+//                        dialog.dismiss()
+//
+//                    }   //itemConfirm.setOnClickListener
+//               }    //when - else
+//            }   //when event?.action
+//            //리턴값이 false면 seekbar 동작 안됨
+//            true //or false
+//        }   //menu.setOnTouchListener

@@ -2,7 +2,6 @@ package com.example.tableorder.basket
 
 import android.content.Context
 import android.os.Build
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.Button
@@ -10,7 +9,6 @@ import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.RecyclerView.Adapter
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
-import com.example.tableorder.R
 import com.example.tableorder.databinding.ItemRecvBasketBinding
 import com.example.tableorder.vo.basket.BasketVO
 import java.text.NumberFormat
