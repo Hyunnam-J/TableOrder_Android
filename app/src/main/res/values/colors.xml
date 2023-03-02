@@ -9,4 +9,5 @@
     <color name="white">#FFFFFFFF</color>
     <color name="tabSelectBackground">#FA0707</color>
     <color name="settingMenu">#202020</color>
+    <color name="tabBackground">#FFF6C3</color>
 </resources>

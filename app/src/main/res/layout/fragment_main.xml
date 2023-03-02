@@ -24,7 +24,7 @@
         app:tabBackground="@drawable/tab_selector"
 
         app:tabIndicatorColor="#FA0707"
-        app:tabIndicatorHeight="2dp"
+        app:tabIndicatorHeight="1.5dp"
         app:tabIndicatorGravity="bottom"
 
         app:tabGravity="center"
@@ -33,16 +33,30 @@
 
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"
+        android:layout_weight="0.8"
         />
 
-    <androidx.viewpager2.widget.ViewPager2
-        android:id="@+id/viewPager"
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.2"/>
+
+    <FrameLayout
+        android:id="@+id/errorFrameLayout"
 
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="7"
-        />
+        android:layout_weight="8">
+
+        <androidx.viewpager2.widget.ViewPager2
+            android:background="#E0DECA"
+            android:id="@+id/viewPager"
+
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            />
+
+    </FrameLayout>
 
     <LinearLayout
         android:layout_margin="15dp"

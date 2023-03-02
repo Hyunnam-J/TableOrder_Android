@@ -5,7 +5,7 @@
         <item name="android:gravity">center|center_vertical</item>
         <item name="android:textSize">26dp</item>
         <item name="android:letterSpacing">0.1</item>
-
+        <item name="fontFamily">@font/gmarketsansmedium</item>
     </style>
 
     <style name="putBasketText" parent="quantityText">
@@ -39,7 +39,7 @@
     </style>
 
     <style name="mainRecvPriceText" parent="quantityText">
-
+        <item name="android:textColor">#F13B3B</item>
     </style>
 
     <style name="totalPriceText" parent="priceText">
@@ -48,9 +48,10 @@
     </style>
 
     <style name="tabText" parent="quantityText">
-        <item name="android:textSize">30dp</item>
+        <item name="android:textSize">26dp</item>
         <item name="android:textStyle">bold</item>
-        <item name="android:letterSpacing">0.2</item>
+        <item name="android:letterSpacing">0.3</item>
+
     </style>
 
     <style name="buttonDeleteMenu" parent="basicButton">

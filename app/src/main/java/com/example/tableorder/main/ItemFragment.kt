@@ -1,13 +1,20 @@
 package com.example.tableorder.main
 
+import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
+import android.util.TypedValue
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.FrameLayout
+import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.tableorder.Resp
 import com.example.tableorder.databinding.FragmentItemBinding
 import com.example.tableorder.retrofit.ApiClient
 import com.example.tableorder.retrofit.MainApiInterface
@@ -62,22 +69,34 @@ class ItemFragment(tabCodeVO: MainTabCodeVO, map: HashMap<String, Any>) : Fragme
                 override fun onResponse(call: Call<String>, response: Response<String>) {
                     if(response.isSuccessful){
 
-                        itemList = Gson().fromJson(response.body(), object : TypeToken<ArrayList<MainItemVO?>?>(){}.type)
+                        val resp : Resp<MainItemVO> = Gson().fromJson(response.body(), object : TypeToken<Resp<MainItemVO?>?>(){}.type)
 
-                        //불러온 소메뉴를 어댑터로 그려준다.
-                        //그리는 과정은 innerAdapter에서.
-                        val innerAdapter = InnerAdapter(context, itemList, map)
+                        try {
 
-                        if(itemList.size < 5){
-                            val innerManager = GridLayoutManager(context, 1, RecyclerView.HORIZONTAL, false)
+                            itemList = resp.item as ArrayList<MainItemVO>
 
-                            binding.innerRecv.adapter = innerAdapter
-                            binding.innerRecv.layoutManager = innerManager
-                        }else{
-                            val innerManager = GridLayoutManager(context, 4, RecyclerView.VERTICAL, false)
+                            //불러온 소메뉴를 어댑터로 그려준다.
+                            //그리는 과정은 innerAdapter에서.
+                            val innerAdapter = InnerAdapter(context, itemList, map)
 
-                            binding.innerRecv.adapter = innerAdapter
-                            binding.innerRecv.layoutManager = innerManager
+                            if(itemList.size < 5){
+                                val innerManager = GridLayoutManager(context, 1, RecyclerView.HORIZONTAL, false)
+
+                                binding.innerRecv.adapter = innerAdapter
+                                binding.innerRecv.layoutManager = innerManager
+                            }else{
+                                val innerManager = GridLayoutManager(context, 4, RecyclerView.VERTICAL, false)
+
+                                binding.innerRecv.adapter = innerAdapter
+                                binding.innerRecv.layoutManager = innerManager
+                            }
+
+                        }catch (e : java.lang.Exception){
+
+                            binding.itemFrameLayout.removeView(binding.innerRecv)
+                            binding.itemFrameLayout.setBackgroundColor(Color.WHITE)
+                            displayTextv(resp.resultMsg)
+
                         }
 
                     }else{
@@ -94,6 +113,29 @@ class ItemFragment(tabCodeVO: MainTabCodeVO, map: HashMap<String, Any>) : Fragme
         }   //var job = coroutineScopeIO.launch
         return binding.root
     }   //override fun onCreateView
+
+    fun createTextv(resultMsg : String) : View{
+        val textv = TextView(requireContext())
+        textv.text = resultMsg
+
+        val lp = FrameLayout.LayoutParams(
+            FrameLayout.LayoutParams.WRAP_CONTENT,
+            FrameLayout.LayoutParams.WRAP_CONTENT
+        ).apply {
+            gravity = Gravity.CENTER
+        }
+
+        textv.layoutParams = lp
+
+        textv.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 50F)
+
+        //imgv.id = ViewCompat.generateViewId()
+        return textv
+    }
+
+    public fun displayTextv(resultMsg : String){
+        binding.itemFrameLayout.addView(createTextv(resultMsg))
+    }
 
     override fun onDestroy() {
         super.onDestroy()

@@ -3,13 +3,18 @@ package com.example.tableorder.main
 import android.content.Context
 import android.os.Bundle
 import android.util.Log
+import android.util.TypedValue
+import android.view.Gravity
 
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.FrameLayout
+import android.widget.TextView
 import android.widget.Toast
 import com.example.tableorder.R
+import com.example.tableorder.Resp
 import com.example.tableorder.basket.BasketFragment
 import com.example.tableorder.databinding.FragmentMainBinding
 import com.example.tableorder.retrofit.ApiClient
@@ -24,14 +29,13 @@ import kotlinx.coroutines.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import java.util.ArrayList
 
 class MainFragment(map: HashMap<String, Any>) : Fragment() {
 
     val TAG = "로그"
 
     private var _binding : FragmentMainBinding? = null
-    private val binding get() = _binding!!
+    val binding get() = _binding!!
 
     private val apiInterface : MainApiInterface = ApiClient.getApiClient().create(
         MainApiInterface::class.java)
@@ -65,15 +69,27 @@ class MainFragment(map: HashMap<String, Any>) : Fragment() {
             call.enqueue(object : Callback<String>{
                 override fun onResponse(call: Call<String>, response: Response<String>) {
                     if(response.isSuccessful){
-                        tabList = Gson().fromJson(response.body(), object : TypeToken<ArrayList<MainTabCodeVO?>?>(){}.type)
 
-                        viewPager.adapter = ViewPagerAdapter(parentFragmentManager, lifecycle, tabList, map)
+                        val resp : Resp<MainTabCodeVO> = Gson().fromJson(response.body(), object : TypeToken<Resp<MainTabCodeVO?>?>(){}.type)
 
-                        //대메뉴인 tabLayout과 소메뉴 뷰 페이지인 viewPager를 합쳐준다.
-                        //소메뉴 뷰에 관한 건 viewPager에서 설정.
-                        TabLayoutMediator(tabLayout, viewPager) { tab, position ->
-                            tab.text = tabList[position].getpName()
-                        }.attach()
+                        try {
+
+                            tabList = resp.item as ArrayList<MainTabCodeVO>
+
+                            viewPager.adapter = ViewPagerAdapter(parentFragmentManager, lifecycle, tabList, map)
+
+                            //대메뉴인 tabLayout과 소메뉴 뷰 페이지인 viewPager를 합쳐준다.
+                            //소메뉴 뷰에 관한 건 viewPager에서 설정.
+                            TabLayoutMediator(tabLayout, viewPager) { tab, position ->
+                                tab.text = tabList[position].getpName()
+                            }.attach()
+
+                        }catch (e : java.lang.Exception){
+
+                            binding.errorFrameLayout.removeView(binding.viewPager)
+                            displayTextv(resp.resultMsg)
+
+                        }
 
                     }else{
                         Toast.makeText(context, "통신 에러", Toast.LENGTH_LONG)
@@ -117,8 +133,32 @@ class MainFragment(map: HashMap<String, Any>) : Fragment() {
         return binding.root
     }   //onCreateView
 
+    fun createTextv(resultMsg : String) : View{
+        val textv = TextView(requireContext())
+        textv.text = resultMsg
+
+        val lp = FrameLayout.LayoutParams(
+            FrameLayout.LayoutParams.WRAP_CONTENT,
+            FrameLayout.LayoutParams.WRAP_CONTENT
+        ).apply {
+            gravity = Gravity.CENTER
+        }
+
+        textv.layoutParams = lp
+
+        textv.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 50F)
+
+        //imgv.id = ViewCompat.generateViewId()
+        return textv
+    }
+
+    public fun displayTextv(resultMsg : String){
+        binding.errorFrameLayout.addView(createTextv(resultMsg))
+    }
+
     override fun onDestroy() {
         super.onDestroy()
         _binding = null
     }
 }   //class MainFragment
+
