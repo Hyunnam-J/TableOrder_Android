@@ -198,6 +198,7 @@ class InnerAdapter(
                         )   //BasketVO
                     )   //map.replace
                 }   //if-else
+                Toast.makeText(context, itemList[i].itemName2+" "+itemQuantity.text+"개가 장바구니에 담겼습니다", Toast.LENGTH_LONG).show()
                 dialog.dismiss()
             }   //itemConfirm.setOnClickListener
         }   //h.menu.setOnClickListener

@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout android:id="@+id/mainFragmentMainLayout"
+<LinearLayout
+    android:id="@+id/mainFragmentMainLayout"
+    android:background="#E0DECA"
 
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
+
     android:orientation="vertical"
     tools:context=".main.MainFragment"
     xmlns:app="http://schemas.android.com/apk/res-auto">
@@ -16,6 +18,7 @@
         android:layout_weight="0.2"/>
 
     <com.google.android.material.tabs.TabLayout
+        android:background="#E0DECA"
         android:id="@+id/tabLayout"
         app:tabTextAppearance="@style/tabText"
 
@@ -24,7 +27,7 @@
         app:tabBackground="@drawable/tab_selector"
 
         app:tabIndicatorColor="#FA0707"
-        app:tabIndicatorHeight="1.5dp"
+        app:tabIndicatorHeight="2dp"
         app:tabIndicatorGravity="bottom"
 
         app:tabGravity="center"
@@ -36,10 +39,10 @@
         android:layout_weight="0.8"
         />
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="0.2"/>
+<!--    <View-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="0dp"-->
+<!--        android:layout_weight="0.2"/>-->
 
     <FrameLayout
         android:id="@+id/errorFrameLayout"
