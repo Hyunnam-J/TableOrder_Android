@@ -1,5 +1,6 @@
 package com.example.tableorder.main
 
+import android.app.ProgressDialog
 import android.content.Context
 import android.os.Bundle
 import android.util.Log
@@ -11,8 +12,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
+import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
+import com.example.tableorder.MyProgressDialog
 import com.example.tableorder.R
 import com.example.tableorder.Resp
 import com.example.tableorder.basket.BasketFragment
@@ -68,7 +71,18 @@ class MainFragment(map: HashMap<String, Any>) : Fragment() {
             val call : Call<String> = apiInterface.tabMenu(SettingFragment.comId, "1", SettingFragment.pos)
             call.enqueue(object : Callback<String>{
                 override fun onResponse(call: Call<String>, response: Response<String>) {
+
+                    val progressDialog = MyProgressDialog(context)
+                    progressDialog.show()
+
+
+
+
+
+
                     if(response.isSuccessful){
+
+
 
                         val resp : Resp<MainTabCodeVO> = Gson().fromJson(response.body(), object : TypeToken<Resp<MainTabCodeVO?>?>(){}.type)
 

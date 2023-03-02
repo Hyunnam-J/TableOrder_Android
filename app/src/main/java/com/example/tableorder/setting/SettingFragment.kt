@@ -103,7 +103,6 @@ class SettingFragment() : Fragment(), View.OnClickListener {
             dialog.dismiss()
 
         }
-
     }   //showDialog()
 
     fun sizingSettingDialog(){
