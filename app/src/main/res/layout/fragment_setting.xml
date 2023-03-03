@@ -8,23 +8,62 @@
     android:orientation="vertical"
     tools:context=".setting.SettingFragment">
 
-    <LinearLayout
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="2">
+        android:layout_weight="2"
+        android:orientation="horizontal">
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_weight="9"
             android:gravity="center"
             android:letterSpacing="0.3"
             android:text="설정"
             android:textColor="#111"
 
             android:textSize="40dp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            />
 
-    </LinearLayout>
+        <RadioGroup
+            android:id="@+id/selectMode"
+            android:layout_gravity="right"
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:orientation="horizontal"
+            >
+
+            <RadioButton
+                android:id="@+id/holdRadioButton"
+                android:text="테이블 고정식"
+
+                android:background="@drawable/selector_radio_button"
+                android:textColor="@drawable/selector_radio_text"
+                android:button="@null"
+
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                />
+
+            <RadioButton
+                android:id="@+id/moveRadioButton"
+                android:text="직원 주문식"
+
+                android:background="@drawable/selector_radio_button"
+                android:textColor="@drawable/selector_radio_text"
+                android:button="@null"
+
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                />
+
+        </RadioGroup>
+
+    </FrameLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -132,6 +171,72 @@
 
                     <androidx.appcompat.widget.AppCompatButton
                         android:id="@+id/buttonPos"
+                        style="@style/settingButton"
+                        android:layout_width="0dp"
+
+                        android:layout_height="match_parent"
+                        android:layout_weight="2"
+                        android:text="변경" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        style="@style/settingTextName"
+                        android:layout_width="0dp"
+
+                        android:layout_height="match_parent"
+                        android:layout_weight="2"
+                        android:text="Table No : "
+                        android:textSize="20dp"
+                        />
+
+                    <TextView
+                        android:id="@+id/textTnum"
+                        style="@style/settingText"
+
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="2" />
+
+                    <androidx.appcompat.widget.AppCompatButton
+                        android:id="@+id/buttonTnum"
+                        style="@style/settingButton"
+                        android:layout_width="0dp"
+
+                        android:layout_height="match_parent"
+                        android:layout_weight="2"
+                        android:text="변경" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        style="@style/settingTextName"
+                        android:layout_width="0dp"
+
+                        android:layout_height="match_parent"
+                        android:layout_weight="2"
+                        android:text="test : " />
+
+                    <TextView
+                        android:id="@+id/textTest"
+                        style="@style/settingText"
+
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="2" />
+
+                    <androidx.appcompat.widget.AppCompatButton
+                        android:id="@+id/buttonTest"
                         style="@style/settingButton"
                         android:layout_width="0dp"
 

@@ -2,17 +2,19 @@ package com.example.tableorder.setting
 
 import android.app.Dialog
 import android.content.Context
+import android.content.Intent
+import android.content.Intent.getIntent
 import android.content.SharedPreferences
 import android.graphics.Point
 import android.os.Bundle
 import android.text.Editable
+import android.util.Log
 import android.view.*
-import android.widget.Button
-import android.widget.EditText
-import android.widget.TextView
+import android.widget.*
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
+import com.example.tableorder.MainActivity
 import com.example.tableorder.R
 import com.example.tableorder.databinding.FragmentSettingBinding
 
@@ -23,15 +25,20 @@ class SettingFragment() : Fragment(), View.OnClickListener {
     private var _binding : FragmentSettingBinding? = null
     private val binding get() = _binding!!
 
-    lateinit var pref : SharedPreferences
-    lateinit var editor : SharedPreferences.Editor
+
 
     lateinit var dialog : Dialog
 
     companion object{
+        var settingPref : SharedPreferences? = null
+        var settingEditor : SharedPreferences.Editor? = null
 
         var comId : String = ""
         var pos : String = ""
+        var selectMode : String = ""
+        var tNum : String = ""
+
+        var test : String = ""
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -45,6 +52,7 @@ class SettingFragment() : Fragment(), View.OnClickListener {
         dialog = context?.let { Dialog(it) }!!
 
         binding.back.setOnClickListener{
+
             val manager = activity?.supportFragmentManager
             manager?.beginTransaction()?.remove(this)?.commit()
             manager?.popBackStack()
@@ -52,6 +60,24 @@ class SettingFragment() : Fragment(), View.OnClickListener {
 
         binding.buttonComId.setOnClickListener(this)
         binding.buttonPos.setOnClickListener(this)
+        binding.buttonTest.setOnClickListener(this)
+        binding.buttonTnum.setOnClickListener(this)
+
+        //고정, 이동 선택 시 값 저장 처리
+        binding.selectMode.setOnCheckedChangeListener{ group, checkId ->
+            when(checkId){
+                R.id.holdRadioButton ->{
+
+                    settingEditor?.putString("selectMode", binding.holdRadioButton.text.toString())
+                    settingEditor?.commit()
+                }
+                R.id.moveRadioButton ->{
+
+                    settingEditor?.putString("selectMode", binding.moveRadioButton.text.toString())
+                    settingEditor?.commit()
+                }
+            }   //when
+        }   //        binding.selectMode.setOnCheckedChangeListener{ group, checkId ->
 
         return binding.root
     }
@@ -59,28 +85,44 @@ class SettingFragment() : Fragment(), View.OnClickListener {
     fun putMap(){
         binding.textComId.text = comId
         binding.textPos.text = pos
+
+        if(selectMode==binding.holdRadioButton.text.toString()){
+            binding.selectMode.check(binding.holdRadioButton.id)
+        }else if(selectMode==binding.moveRadioButton.text.toString()){
+            binding.selectMode.check(binding.moveRadioButton.id)
+        }
+
+        binding.textTnum.text = tNum
+
+        binding.textTest.text = test
     }
 
+    fun setting(){
+        //변수 값 저장을 위한 세팅
+        settingPref = activity?.getSharedPreferences("pref", 0)!!
+        settingEditor = settingPref?.edit()!!
+
+        //시작 후 저장된 값을 불러온다
+        comId = settingPref?.getString("Com ID", "").toString()
+        pos = settingPref?.getString("Pos", "").toString()
+        selectMode = settingPref?.getString("selectMode", "").toString()
+        tNum = settingPref?.getString("Table No", "").toString()
+
+        test = settingPref?.getString("test", "").toString()
+    }
     override fun onClick(v: View?) {
         when(v?.id){
 
             R.id.buttonComId -> showDialog("Com ID", comId)
             R.id.buttonPos -> showDialog("Pos", pos)
+            R.id.buttonTnum -> showDialog("Table No", tNum)
+
+            R.id.buttonTest -> showDialog("test", test)
 
             R.id.settingCancel -> dialog!!.dismiss()
 
         }   //when
     }   //override fun onClick(v: View?)
-
-    fun setting(){
-        //변수 값 저장을 위한 세팅
-        pref = activity?.getSharedPreferences("pref", 0)!!
-        editor = pref?.edit()!!
-
-        //시작 후 저장된 값을 불러온다
-        comId = pref.getString("Com ID", "").toString()
-        pos = pref.getString("Pos", "").toString()
-    }
 
     fun showDialog(key : String, value : String){
 
@@ -96,8 +138,8 @@ class SettingFragment() : Fragment(), View.OnClickListener {
         dialog.findViewById<Button>(R.id.settingCancel).setOnClickListener(this)
         dialog.findViewById<Button>(R.id.settingConfirm).setOnClickListener{
 
-            editor?.putString(key, dialog.findViewById<EditText>(R.id.setValues).text.toString())
-            editor?.commit()
+            settingEditor?.putString(key, dialog.findViewById<EditText>(R.id.setValues).text.toString())
+            settingEditor?.commit()
 
             refreshFragment(requireFragmentManager())
             dialog.dismiss()

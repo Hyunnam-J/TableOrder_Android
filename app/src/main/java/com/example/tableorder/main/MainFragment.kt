@@ -1,20 +1,19 @@
 package com.example.tableorder.main
 
-import android.app.ProgressDialog
+import android.app.Dialog
 import android.content.Context
+import android.graphics.Color
+import android.graphics.ColorFilter
+import android.graphics.Point
+import android.graphics.PorterDuff
 import android.os.Bundle
 import android.util.Log
 import android.util.TypedValue
-import android.view.Gravity
-
+import android.view.*
+import android.widget.*
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import android.widget.FrameLayout
-import android.widget.ProgressBar
-import android.widget.TextView
-import android.widget.Toast
+import com.example.tableorder.MainActivity
 import com.example.tableorder.MyProgressDialog
 import com.example.tableorder.R
 import com.example.tableorder.Resp
@@ -28,10 +27,14 @@ import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-import kotlinx.coroutines.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import kotlin.math.log
 
 class MainFragment(map: HashMap<String, Any>) : Fragment() {
 
@@ -48,6 +51,8 @@ class MainFragment(map: HashMap<String, Any>) : Fragment() {
     lateinit var tabList : List<MainTabCodeVO>
 
     var map : HashMap<String, Any> = HashMap()
+
+    lateinit var tNumDialog : Dialog
 
     init {
         this.map = map
@@ -66,23 +71,52 @@ class MainFragment(map: HashMap<String, Any>) : Fragment() {
 
         val context: Context = requireContext()
 
+
+
+
+        
+        if(SettingFragment.settingPref?.getString("selectMode", "") == "직원 주문식"){
+
+            binding.settingTnum.isVisible = true
+
+            binding.settingTnum.setOnClickListener{
+                tNumDialog = Dialog(context)
+                tNumDialog.setContentView(R.layout.activity_tnum_dialog)
+                sizingSettingDialog()
+                tNumDialog.show()
+
+                tNumDialog.findViewById<EditText>(R.id.textTnum).setText(SettingFragment.settingPref?.getString("Table No", ""))
+                tNumDialog.findViewById<Button>(R.id.buttonTnum).setOnClickListener{
+                    SettingFragment.settingEditor?.putString("Table No", tNumDialog.findViewById<EditText>(R.id.textTnum).text.toString())
+                    SettingFragment.settingEditor?.commit()
+                    tNumDialog.dismiss()
+                }
+
+            }
+        }
+
+
+
+
+
+
+
         //먼저 대메뉴를 불러오고,
         job = coroutineScopeIO.launch {
             val call : Call<String> = apiInterface.tabMenu(SettingFragment.comId, "1", SettingFragment.pos)
             call.enqueue(object : Callback<String>{
                 override fun onResponse(call: Call<String>, response: Response<String>) {
 
-                    val progressDialog = MyProgressDialog(context)
-                    progressDialog.show()
+                    /* progress spinner . . . */
+//                    val progressDialog = MyProgressDialog(context)
+//                    progressDialog.show()
 
-
-
-
-
+//                    val pregressSpinner = ProgressBar(context, null, androidx.appcompat.R.attr.progressBarStyle)
+//                    pregressSpinner.indeterminateDrawable.setColorFilter(0x10000, PorterDuff.Mode.MULTIPLY)
+//                    pregressSpinner.
+                    /* progress spinner . . . */
 
                     if(response.isSuccessful){
-
-
 
                         val resp : Resp<MainTabCodeVO> = Gson().fromJson(response.body(), object : TypeToken<Resp<MainTabCodeVO?>?>(){}.type)
 
@@ -168,6 +202,21 @@ class MainFragment(map: HashMap<String, Any>) : Fragment() {
 
     public fun displayTextv(resultMsg : String){
         binding.errorFrameLayout.addView(createTextv(resultMsg))
+    }
+
+    fun sizingSettingDialog(){
+
+        val windowManager = requireContext().getSystemService(Context.WINDOW_SERVICE) as WindowManager
+        val display = windowManager.defaultDisplay
+        val size = Point()
+        display.getSize(size)
+        val params: ViewGroup.LayoutParams? = tNumDialog?.window?.attributes
+        val deviceWidth = size.x
+        val deviceHeight = size.y
+
+        params?.width = (deviceWidth * 0.7).toInt()
+        params?.height = (deviceHeight * 0.5).toInt()
+        tNumDialog?.window?.attributes = params as WindowManager.LayoutParams
     }
 
     override fun onDestroy() {

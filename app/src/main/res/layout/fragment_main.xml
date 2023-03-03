@@ -17,27 +17,43 @@
         android:layout_height="0dp"
         android:layout_weight="0.2"/>
 
-    <com.google.android.material.tabs.TabLayout
-        android:background="#E0DECA"
-        android:id="@+id/tabLayout"
-        app:tabTextAppearance="@style/tabText"
-
-        app:tabTextColor="#111"
-        app:tabSelectedTextColor="#FA0707"
-        app:tabBackground="@drawable/tab_selector"
-
-        app:tabIndicatorColor="#FA0707"
-        app:tabIndicatorHeight="2dp"
-        app:tabIndicatorGravity="bottom"
-
-        app:tabGravity="center"
-
-        app:tabRippleColor="@null"
-
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="0.8"
-        />
+        android:layout_weight="0.8">
+
+        <com.google.android.material.tabs.TabLayout
+            android:background="#E0DECA"
+            android:id="@+id/tabLayout"
+            app:tabTextAppearance="@style/tabText"
+
+            app:tabTextColor="#111"
+            app:tabSelectedTextColor="#FA0707"
+            app:tabBackground="@drawable/tab_selector"
+
+            app:tabIndicatorColor="#FA0707"
+            app:tabIndicatorHeight="2dp"
+            app:tabIndicatorGravity="bottom"
+
+            app:tabGravity="center"
+
+            app:tabRippleColor="@null"
+
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            />
+
+        <ImageView
+            android:id="@+id/settingTnum"
+            android:background="@drawable/ic_launcher_foreground"
+
+            android:visibility="invisible"
+
+            android:layout_gravity="right"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+    </FrameLayout>
 
 <!--    <View-->
 <!--        android:layout_width="match_parent"-->
@@ -98,3 +114,4 @@
     </LinearLayout>
 
 </LinearLayout>
+

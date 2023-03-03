@@ -20,6 +20,7 @@ import com.example.tableorder.databinding.FragmentBasketBinding
 import com.example.tableorder.main.MainFragment
 import com.example.tableorder.retrofit.ApiClient
 import com.example.tableorder.retrofit.BasketApiInterface
+import com.example.tableorder.setting.SettingFragment
 import com.example.tableorder.vo.basket.BasketVO
 import com.example.tableorder.vo.basket.SendOrderVO
 import jpos.JposConst
@@ -87,7 +88,7 @@ class BasketFragment(map: HashMap<String, Any>) : Fragment() {
 
             job = coroutineScopeIO.launch {
 
-                val call : Call<String> = apiInterface.order(SendOrderVO(basketList!!, 1, 0))
+                val call : Call<String> = apiInterface.order(SendOrderVO(basketList!!, Integer.parseInt(SettingFragment.tNum), 0))
                 call.enqueue(object : Callback<String> {
                     override fun onResponse(call: Call<String>, response: Response<String>) {
                         if(response.isSuccessful){
