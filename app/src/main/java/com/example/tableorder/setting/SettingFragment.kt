@@ -1,33 +1,27 @@
 package com.example.tableorder.setting
 
 import android.app.Dialog
-import android.content.Context
-import android.content.Intent
-import android.content.Intent.getIntent
 import android.content.SharedPreferences
-import android.graphics.Point
 import android.os.Bundle
 import android.text.Editable
-import android.util.Log
 import android.view.*
 import android.widget.*
+import android.widget.RadioGroup.OnCheckedChangeListener
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
-import com.example.tableorder.MainActivity
 import com.example.tableorder.R
+import com.example.tableorder.SizingDialog
 import com.example.tableorder.databinding.FragmentSettingBinding
 
-class SettingFragment() : Fragment(), View.OnClickListener {
+class SettingFragment() : Fragment(), View.OnClickListener, OnCheckedChangeListener {
 
     private val TAG = "로그"
 
     private var _binding : FragmentSettingBinding? = null
     private val binding get() = _binding!!
 
-
-
-    lateinit var dialog : Dialog
+    lateinit var settingDialog : Dialog
 
     companion object{
         var settingPref : SharedPreferences? = null
@@ -49,7 +43,7 @@ class SettingFragment() : Fragment(), View.OnClickListener {
         setting()
         putMap()
 
-        dialog = context?.let { Dialog(it) }!!
+        settingDialog = context?.let { Dialog(it) }!!
 
         binding.back.setOnClickListener{
 
@@ -64,20 +58,7 @@ class SettingFragment() : Fragment(), View.OnClickListener {
         binding.buttonTnum.setOnClickListener(this)
 
         //고정, 이동 선택 시 값 저장 처리
-        binding.selectMode.setOnCheckedChangeListener{ group, checkId ->
-            when(checkId){
-                R.id.holdRadioButton ->{
-
-                    settingEditor?.putString("selectMode", binding.holdRadioButton.text.toString())
-                    settingEditor?.commit()
-                }
-                R.id.moveRadioButton ->{
-
-                    settingEditor?.putString("selectMode", binding.moveRadioButton.text.toString())
-                    settingEditor?.commit()
-                }
-            }   //when
-        }   //        binding.selectMode.setOnCheckedChangeListener{ group, checkId ->
+        binding.selectMode.setOnCheckedChangeListener(this)
 
         return binding.root
     }
@@ -119,48 +100,33 @@ class SettingFragment() : Fragment(), View.OnClickListener {
 
             R.id.buttonTest -> showDialog("test", test)
 
-            R.id.settingCancel -> dialog!!.dismiss()
+            R.id.settingCancel -> settingDialog!!.dismiss()
 
         }   //when
     }   //override fun onClick(v: View?)
 
     fun showDialog(key : String, value : String){
 
-        dialog!!.setContentView(R.layout.activity_setting_dialog)
-        sizingSettingDialog()
-        dialog.show()
+        settingDialog!!.setContentView(R.layout.activity_setting_dialog)
+        SizingDialog().sizingDialog(settingDialog, requireContext(), 0.7, 0.2)
+        settingDialog.show()
 
-        dialog.findViewById<TextView>(R.id.settingName).text = key + " :"
+        settingDialog.findViewById<TextView>(R.id.settingName).text = key + " :"
 
-        dialog.findViewById<EditText>(R.id.setValues).text =
+        settingDialog.findViewById<EditText>(R.id.setValues).text =
             Editable.Factory.getInstance().newEditable(value)
 
-        dialog.findViewById<Button>(R.id.settingCancel).setOnClickListener(this)
-        dialog.findViewById<Button>(R.id.settingConfirm).setOnClickListener{
+        settingDialog.findViewById<Button>(R.id.settingCancel).setOnClickListener(this)
+        settingDialog.findViewById<Button>(R.id.settingConfirm).setOnClickListener{
 
-            settingEditor?.putString(key, dialog.findViewById<EditText>(R.id.setValues).text.toString())
+            settingEditor?.putString(key, settingDialog.findViewById<EditText>(R.id.setValues).text.toString())
             settingEditor?.commit()
 
             refreshFragment(requireFragmentManager())
-            dialog.dismiss()
+            settingDialog.dismiss()
 
         }
     }   //showDialog()
-
-    fun sizingSettingDialog(){
-
-        val windowManager = requireContext().getSystemService(Context.WINDOW_SERVICE) as WindowManager
-        val display = windowManager.defaultDisplay
-        val size = Point()
-        display.getSize(size)
-        val params: ViewGroup.LayoutParams? = dialog?.window?.attributes
-        val deviceWidth = size.x
-        val deviceHeight = size.y
-
-        params?.width = (deviceWidth * 0.7).toInt()
-        params?.height = (deviceHeight * 0.2).toInt()
-        dialog?.window?.attributes = params as WindowManager.LayoutParams
-    }
 
     fun refreshFragment(fragmentManager: FragmentManager) {
         val detachFragment: FragmentTransaction = fragmentManager.beginTransaction()
@@ -174,5 +140,22 @@ class SettingFragment() : Fragment(), View.OnClickListener {
         super.onDestroy()
         _binding = null
     }
+
+    override fun onCheckedChanged(group: RadioGroup?, checkedId: Int) {
+        when(checkedId){
+            R.id.holdRadioButton ->{
+
+                settingEditor?.putString("selectMode", binding.holdRadioButton.text.toString())
+                settingEditor?.commit()
+                Toast.makeText(context, "고정식 모드가 선택되었습니다", Toast.LENGTH_SHORT).show()
+            }
+            R.id.moveRadioButton ->{
+
+                settingEditor?.putString("selectMode", binding.moveRadioButton.text.toString())
+                settingEditor?.commit()
+                Toast.makeText(context, "이동식 모드가 선택되었습니다", Toast.LENGTH_SHORT).show()
+            }
+        }   //when
+    }   //override fun onCheckedChanged(group: RadioGroup?, checkedId: Int) {
 
 }   //class

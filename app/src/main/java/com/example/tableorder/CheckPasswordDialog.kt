@@ -1,8 +1,7 @@
-package com.example.tableorder.setting
+package com.example.tableorder
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import com.example.tableorder.R
 
 class CheckPasswordDialog : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

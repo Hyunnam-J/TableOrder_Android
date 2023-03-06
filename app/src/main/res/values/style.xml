@@ -80,5 +80,11 @@
         <item name="backgroundTint">#CAC8C8</item>
         <item name="android:textSize">22dp</item>
     </style>
+    
+    <style name="radioButtonText" parent="quantityText">
+        <item name="android:gravity">center</item>
+        <item name="android:textSize">24dp</item>
+
+    </style>
 
 </resources>

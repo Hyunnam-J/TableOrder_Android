@@ -8,16 +8,22 @@
     android:orientation="vertical"
     tools:context=".setting.SettingFragment">
 
-    <FrameLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="2"
         android:orientation="horizontal">
 
+        <View
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.7"/>
+
         <TextView
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="9"
+            android:layout_weight="1"
+
             android:gravity="center"
             android:letterSpacing="0.3"
             android:text="설정"
@@ -29,41 +35,52 @@
 
         <RadioGroup
             android:id="@+id/selectMode"
-            android:layout_gravity="right"
+            android:layout_gravity="bottom"
+            android:layout_marginBottom="5dp"
 
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_weight="0.5"
 
             android:orientation="horizontal"
             >
 
             <RadioButton
+                style="@style/radioButtonText"
                 android:id="@+id/holdRadioButton"
-                android:text="테이블 고정식"
+                android:text="고정식"
 
                 android:background="@drawable/selector_radio_button"
                 android:textColor="@drawable/selector_radio_text"
                 android:button="@null"
 
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="match_parent"
+                android:layout_weight="1"
                 />
 
             <RadioButton
+                style="@style/radioButtonText"
                 android:id="@+id/moveRadioButton"
-                android:text="직원 주문식"
+                android:text="이동식"
 
                 android:background="@drawable/selector_radio_button"
                 android:textColor="@drawable/selector_radio_text"
                 android:button="@null"
 
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="match_parent"
+                android:layout_weight="1"
                 />
 
         </RadioGroup>
 
-    </FrameLayout>
+        <View
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.2"/>
+
+    </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"

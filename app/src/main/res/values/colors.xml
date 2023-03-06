@@ -10,4 +10,5 @@
     <color name="tabSelectBackground">#FA0707</color>
     <color name="settingMenu">#202020</color>
     <color name="tabBackground">#E0DECA</color>
+    <color name="dialog_spinner">#FA0707</color>
 </resources>
