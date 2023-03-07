@@ -11,7 +11,6 @@ public class BasketVO extends MainItemVO {
 					String stockUse, int uPrice, int stock) {
 		super(comId, pName, itemName1, itemName2, pos, pCode, tabNo, itemCode, bColor, tax, subUse, sex, area, stockUse, uPrice,
 				stock);
-		// TODO Auto-generated constructor stub
 	}
 
 	public BasketVO(String comId, String pName, String itemName1, String itemName2, String pos, String pCode,

@@ -3,7 +3,6 @@ package com.example.tableorder.main
 import android.app.Dialog
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.util.TypedValue
 import android.view.*
 import android.widget.*
@@ -16,7 +15,6 @@ import com.example.tableorder.retrofit.ApiClient
 import com.example.tableorder.retrofit.MainApiInterface
 import com.example.tableorder.setting.SettingFragment
 import com.example.tableorder.vo.main.MainTabCodeVO
-import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
@@ -63,7 +61,7 @@ class MainFragment(map: HashMap<String, Any>) : Fragment() {
 
         val context: Context = requireContext()
 
-        if(SettingFragment.settingPref?.getString("selectMode", "") == "이동식"){
+        if(SettingFragment.settingPref?.getString("selectOrderMode", "") == "이동식"){
 
             binding.settingTnum.isVisible = true
 
@@ -79,9 +77,8 @@ class MainFragment(map: HashMap<String, Any>) : Fragment() {
                     SettingFragment.settingEditor?.commit()
                     tNumDialog.dismiss()
                 }
-
-            }
-        }
+            }   //binding.settingTnum.setOnClickListener
+        }   //if(SettingFragment.settingPref?.getString("selectMode", "") == "이동식")
 
         //먼저 대메뉴를 불러오고,
         job = coroutineScopeIO.launch {
@@ -108,7 +105,7 @@ class MainFragment(map: HashMap<String, Any>) : Fragment() {
                         }catch (e : java.lang.Exception){
 
                             binding.errorFrameLayout.removeView(binding.viewPager)
-                            displayTextv(resp.resultMsg)
+                            goOnErrorPage(resp.resultMsg)
 
                         }
 
@@ -125,6 +122,7 @@ class MainFragment(map: HashMap<String, Any>) : Fragment() {
             })  //call.enqueue(object : Callback<String>
         }   //var job = coroutineScopeIO.launch
 
+        /*
         tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener{
             override fun onTabSelected(tab: TabLayout.Tab?) {
                 Log.d(TAG, "onTabSelected: 셀렉")
@@ -138,6 +136,7 @@ class MainFragment(map: HashMap<String, Any>) : Fragment() {
                 Log.d(TAG, "onTabSelected: 다시 셀렉")
             }
         })  //binding.tabLayout.addOnTabSelectedListener
+        */
 
         binding.back.setOnClickListener{
             map.clear()
@@ -173,7 +172,7 @@ class MainFragment(map: HashMap<String, Any>) : Fragment() {
         return textv
     }
 
-    public fun displayTextv(resultMsg : String){
+    fun goOnErrorPage(resultMsg : String){
         binding.errorFrameLayout.addView(createTextv(resultMsg))
     }
 

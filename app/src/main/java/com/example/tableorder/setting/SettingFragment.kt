@@ -29,7 +29,8 @@ class SettingFragment() : Fragment(), View.OnClickListener, OnCheckedChangeListe
 
         var comId : String = ""
         var pos : String = ""
-        var selectMode : String = ""
+        var selectOrderMode : String = ""
+        var selectPayMode : String = ""
         var tNum : String = ""
 
         var test : String = ""
@@ -58,7 +59,8 @@ class SettingFragment() : Fragment(), View.OnClickListener, OnCheckedChangeListe
         binding.buttonTnum.setOnClickListener(this)
 
         //고정, 이동 선택 시 값 저장 처리
-        binding.selectMode.setOnCheckedChangeListener(this)
+        binding.selectOrderMode.setOnCheckedChangeListener(this)
+        binding.selectPayMode.setOnCheckedChangeListener(this)
 
         return binding.root
     }
@@ -67,10 +69,16 @@ class SettingFragment() : Fragment(), View.OnClickListener, OnCheckedChangeListe
         binding.textComId.text = comId
         binding.textPos.text = pos
 
-        if(selectMode==binding.holdRadioButton.text.toString()){
-            binding.selectMode.check(binding.holdRadioButton.id)
-        }else if(selectMode==binding.moveRadioButton.text.toString()){
-            binding.selectMode.check(binding.moveRadioButton.id)
+        if(selectOrderMode==binding.holdRadioButton.text.toString()){
+            binding.selectOrderMode.check(binding.holdRadioButton.id)
+        }else if(selectOrderMode==binding.moveRadioButton.text.toString()){
+            binding.selectOrderMode.check(binding.moveRadioButton.id)
+        }
+
+        if(selectPayMode==binding.deferredRadioButton.text.toString()){
+            binding.selectPayMode.check(binding.deferredRadioButton.id)
+        }else if(selectPayMode==binding.preRadioButton.text.toString()){
+            binding.selectPayMode.check(binding.preRadioButton.id)
         }
 
         binding.textTnum.text = tNum
@@ -86,7 +94,8 @@ class SettingFragment() : Fragment(), View.OnClickListener, OnCheckedChangeListe
         //시작 후 저장된 값을 불러온다
         comId = settingPref?.getString("Com ID", "").toString()
         pos = settingPref?.getString("Pos", "").toString()
-        selectMode = settingPref?.getString("selectMode", "").toString()
+        selectOrderMode = settingPref?.getString("selectOrderMode", "").toString()
+        selectPayMode = settingPref?.getString("selectPayMode", "").toString()
         tNum = settingPref?.getString("Table No", "").toString()
 
         test = settingPref?.getString("test", "").toString()
@@ -145,17 +154,28 @@ class SettingFragment() : Fragment(), View.OnClickListener, OnCheckedChangeListe
         when(checkedId){
             R.id.holdRadioButton ->{
 
-                settingEditor?.putString("selectMode", binding.holdRadioButton.text.toString())
+                settingEditor?.putString("selectOrderMode", binding.holdRadioButton.text.toString())
                 settingEditor?.commit()
                 Toast.makeText(context, "고정식 모드가 선택되었습니다", Toast.LENGTH_SHORT).show()
             }
             R.id.moveRadioButton ->{
 
-                settingEditor?.putString("selectMode", binding.moveRadioButton.text.toString())
+                settingEditor?.putString("selectOrderMode", binding.moveRadioButton.text.toString())
                 settingEditor?.commit()
                 Toast.makeText(context, "이동식 모드가 선택되었습니다", Toast.LENGTH_SHORT).show()
             }
+            R.id.deferredRadioButton ->{
+
+                settingEditor?.putString("selectPayMode", binding.deferredRadioButton.text.toString())
+                settingEditor?.commit()
+                Toast.makeText(context, "후불 모드가 선택되었습니다", Toast.LENGTH_SHORT).show()
+            }
+            R.id.preRadioButton ->{
+
+                settingEditor?.putString("selectPayMode", binding.preRadioButton.text.toString())
+                settingEditor?.commit()
+                Toast.makeText(context, "선불 모드가 선택되었습니다", Toast.LENGTH_SHORT).show()
+            }
         }   //when
     }   //override fun onCheckedChanged(group: RadioGroup?, checkedId: Int) {
-
 }   //class

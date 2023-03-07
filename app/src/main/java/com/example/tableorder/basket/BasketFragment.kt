@@ -1,8 +1,7 @@
 package com.example.tableorder.basket
 
-import android.content.Context
-import android.graphics.Bitmap
 import android.os.Bundle
+import android.util.Log
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
@@ -23,6 +22,7 @@ import com.example.tableorder.retrofit.BasketApiInterface
 import com.example.tableorder.setting.SettingFragment
 import com.example.tableorder.vo.basket.BasketVO
 import com.example.tableorder.vo.basket.SendOrderVO
+import com.example.tableorder.vo.basket.SendPayVO
 import jpos.JposConst
 import jpos.POSPrinter
 import jpos.POSPrinterConst
@@ -35,7 +35,6 @@ import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import java.nio.ByteBuffer
 import java.text.NumberFormat
 import java.util.*
 
@@ -73,31 +72,33 @@ class BasketFragment(map: HashMap<String, Any>) : Fragment() {
 
         basketList = map.values.toList() as List<BasketVO>
 
-        if(basketList!!.isEmpty()){
-            displayImgv()
-        }else{
-            refreshBasketList()
-        }
+        if(SettingFragment.settingPref?.getString("selectPayMode", "") == "후불")
+            binding.orderOrPay.text = "주문하기"
+        else if(SettingFragment.settingPref?.getString("selectPayMode", "") == "선불")
+            binding.orderOrPay.text = "결제하기"
 
-        binding.order.setOnClickListener{
+        if(basketList!!.isEmpty())
+            displayImgv()
+        else
+            refreshBasketList()
+
+        binding.orderOrPay.setOnClickListener{
 
             if(basketList!!.isEmpty()){
                 Toast.makeText(context, "장바구니에 물건이 없습니다", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
 
-            job = coroutineScopeIO.launch {
+            if(SettingFragment.settingPref?.getString("selectPayMode", "") == "후불"){
 
-                val call : Call<String> = apiInterface.order(SendOrderVO(basketList!!, Integer.parseInt(SettingFragment.tNum), 0))
-                call.enqueue(object : Callback<String> {
-                    override fun onResponse(call: Call<String>, response: Response<String>) {
-                        if(response.isSuccessful){
-                            if(response.body()=="success"){
-                                Toast.makeText(context, "주문이 완료되었습니다", Toast.LENGTH_LONG).show()
+                job = coroutineScopeIO.launch {
 
-
-
-
+                    val call : Call<String> = apiInterface.order(SendOrderVO(basketList!!, Integer.parseInt(SettingFragment.tNum), 0))
+                    call.enqueue(object : Callback<String> {
+                        override fun onResponse(call: Call<String>, response: Response<String>) {
+                            if(response.isSuccessful){
+                                if(response.body()=="1"){
+                                    Toast.makeText(context, "주문이 완료되었습니다", Toast.LENGTH_LONG).show()
 
 
 
@@ -112,148 +113,199 @@ class BasketFragment(map: HashMap<String, Any>) : Fragment() {
 
 
 
-                                //프린트
-                                //33p - 장치 설정 정보 저장 객체를 통해 기존 저장된 설정 파일을 연다. 없으면 새로 생성
-                                val bxlConfigLoader = BXLConfigLoader(context)
-                                try {
-                                    bxlConfigLoader.openFile()
-                                }catch (e : java.lang.Exception){
-                                    e.printStackTrace()
-                                    bxlConfigLoader.newFile()
-                                }
 
-                                //34p - 저장된 설정 정보를 얻어온다
-                                try {
-                                    for(entry : Any in bxlConfigLoader.entries){
-                                        val jposEntry : JposEntry = entry as JposEntry
-                                        val strLogicalName : String = jposEntry.logicalName
 
-                                        //이전 것 삭제
-                                        bxlConfigLoader.removeEntry(strLogicalName)
+
+
+                                    //프린트
+                                    //33p - 장치 설정 정보 저장 객체를 통해 기존 저장된 설정 파일을 연다. 없으면 새로 생성
+                                    val bxlConfigLoader = BXLConfigLoader(context)
+                                    try {
+                                        bxlConfigLoader.openFile()
+                                    }catch (e : java.lang.Exception){
+                                        e.printStackTrace()
+                                        bxlConfigLoader.newFile()
                                     }
-                                }catch (e : java.lang.Exception){
-                                    e.printStackTrace()
-                                }
 
-                                //35p - 장치 연결 정보 추가
-                                try {
-                                    bxlConfigLoader.addEntry("SRP-350III",
-                                        BXLConfigLoader.DEVICE_CATEGORY_POS_PRINTER,
-                                        BXLConfigLoader.PRODUCT_NAME_SRP_350III,
-                                        BXLConfigLoader.DEVICE_BUS_WIFI,
-                                        "address-ex-74:F0:7D:E4:11:AF")
+                                    //34p - 저장된 설정 정보를 얻어온다
+                                    try {
+                                        for(entry : Any in bxlConfigLoader.entries){
+                                            val jposEntry : JposEntry = entry as JposEntry
+                                            val strLogicalName : String = jposEntry.logicalName
 
-                                    //새로 저장한 정보 저장
-                                    bxlConfigLoader.saveFile()
+                                            //이전 것 삭제
+                                            bxlConfigLoader.removeEntry(strLogicalName)
+                                        }
+                                    }catch (e : java.lang.Exception){
+                                        e.printStackTrace()
+                                    }
 
-                                }catch (e : Exception){
-                                    e.printStackTrace()
-                                }
+                                    //35p - 장치 연결 정보 추가
+                                    try {
+                                        bxlConfigLoader.addEntry("SRP-350III",
+                                            BXLConfigLoader.DEVICE_CATEGORY_POS_PRINTER,
+                                            BXLConfigLoader.PRODUCT_NAME_SRP_350III,
+                                            BXLConfigLoader.DEVICE_BUS_WIFI,
+                                            "address-ex-74:F0:7D:E4:11:AF")
 
-                                //39p - 프린터 오픈, port 오픈, device 사용을 위해 반드시 선행되어야 함
-                                try {
-                                    var posPrinter : POSPrinter = POSPrinter(context)
-                                    posPrinter.open("SRP-350III")
-                                    posPrinter.claim(5000)
-                                    posPrinter.deviceEnabled = true
+                                        //새로 저장한 정보 저장
+                                        bxlConfigLoader.saveFile()
 
-                                    //장비 건강한지 상태 체크
-                                    posPrinter.checkHealth(JposConst.JPOS_CH_INTERNAL)
+                                    }catch (e : Exception){
+                                        e.printStackTrace()
+                                    }
 
-                                    //비동기 모드
-                                    posPrinter.asyncMode = true
+                                    //39p - 프린터 오픈, port 오픈, device 사용을 위해 반드시 선행되어야 함
+                                    try {
+                                        var posPrinter : POSPrinter = POSPrinter(context)
+                                        posPrinter.open("SRP-350III")
+                                        posPrinter.claim(5000)
+                                        posPrinter.deviceEnabled = true
 
-                                    //프린터의 character set
-                                    posPrinter.characterSet = BXLConst.CE_UTF8
+                                        //장비 건강한지 상태 체크
+                                        posPrinter.checkHealth(JposConst.JPOS_CH_INTERNAL)
 
-                                    //프린터로 전송할 데이터의 인코딩 설정
-                                    posPrinter.characterEncoding = BXLConst.CE_UTF8
+                                        //비동기 모드
+                                        posPrinter.asyncMode = true
 
-                                    //p48 -- 100 : Full cut, 90 : Partial cut
-                                    posPrinter.cutPaper(100)
+                                        //프린터의 character set
+                                        posPrinter.characterSet = BXLConst.CE_UTF8
 
-                                    //p58 - 인쇄 위치 지정
-                                    posPrinter.pageModeHorizontalPosition = 0
-                                    posPrinter.pageModeVerticalPosition = 0
+                                        //프린터로 전송할 데이터의 인코딩 설정
+                                        posPrinter.characterEncoding = BXLConst.CE_UTF8
 
-                                    //p58 - 인쇄할 데이터 전송(텍스트)
-                                    posPrinter.printNormal(POSPrinterConst.PTR_S_RECEIPT, "Print Data\n")
+                                        //p48 -- 100 : Full cut, 90 : Partial cut
+                                        posPrinter.cutPaper(100)
 
-                                    //p58 - 인쇄 시작
+                                        //p58 - 인쇄 위치 지정
+                                        posPrinter.pageModeHorizontalPosition = 0
+                                        posPrinter.pageModeVerticalPosition = 0
+
+                                        //p58 - 인쇄할 데이터 전송(텍스트)
+                                        posPrinter.printNormal(POSPrinterConst.PTR_S_RECEIPT, "Print Data\n")
+
+                                        //p58 - 인쇄 시작
 //                                    posPrinter.pageModePrint(POSPrinterConst.PTR_PM_PAGE_NOMAL) --페이지 노멀이 없음...
 //                                    이건 페이지모드로 인쇄라는데..
 
-                                    //다음 인쇄 위치까지 용지 feedding
-                                    posPrinter.markFeed(0)
+                                        //다음 인쇄 위치까지 용지 feedding
+                                        posPrinter.markFeed(0)
 
-                                    //디바이스 종료
+                                        //디바이스 종료
 //                                    posPrinter.release()
 //                                    posPrinter.close()
 //                                    posPrinter.deviceEnabled = false
-                                }catch (e : Exception){
-                                    e.printStackTrace()
+                                    }catch (e : Exception){
+                                        e.printStackTrace()
+                                    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                    //장바구니 비우고
+                                    map.clear()
+
+                                    //프래그먼트 지운다
+                                    val manager = activity?.supportFragmentManager
+                                    manager?.beginTransaction()?.remove(this@BasketFragment)?.commit()
+                                    manager?.popBackStack()
+
+                                }else{
+                                    Toast.makeText(context, "데이터베이스 처리 중 오류", Toast.LENGTH_LONG).show()
+//                                    parentFragmentManager.beginTransaction().replace(R.id.container, MainFragment(map)).commit()
+                                }
+                            }else{
+                                Toast.makeText(context, "통신 장애", Toast.LENGTH_LONG).show()
+//                                parentFragmentManager.beginTransaction().replace(R.id.container, MainFragment(map)).commit()
+                            }
+                            job.cancel()
+                        }   //onResponse
+
+                        override fun onFailure(call: Call<String>, t: Throwable) {
+                            Toast.makeText(context, "통신 장애", Toast.LENGTH_LONG).show()
+                            job.cancel()
+                        }
+                    })  //call.enqueue
+                }   //job = coroutineScopeIO.launch
+            }else if(SettingFragment.settingPref?.getString("selectPayMode", "") == "선불"){
+
+
+
+
+
+                job = coroutineScopeIO.launch {
+                    val call : Call<String> = apiInterface.pay(
+                        SendPayVO(
+                            basketList!!,
+                            Integer.parseInt(SettingFragment.tNum)
+                        ))
+                    call.enqueue(object : Callback<String>{
+                        override fun onResponse(call: Call<String>, response: Response<String>) {
+                            if(response.isSuccessful){
+                                if(response.body()=="1"){
+
+                                    Toast.makeText(context, "결제가 완료되었습니다", Toast.LENGTH_LONG).show()
+
+
+
+
+
+                                    //장바구니 비우고
+                                    map.clear()
+
+                                    //프래그먼트 지운다
+                                    val manager = activity?.supportFragmentManager
+                                    manager?.beginTransaction()?.remove(this@BasketFragment)?.commit()
+                                    manager?.popBackStack()
+
+                                }else{
+                                    Toast.makeText(context, "데이터베이스 처리 중 오류", Toast.LENGTH_LONG).show()
                                 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-                                //장바구니 비우고
-                                map.clear()
-
-                                //프래그먼트 지운다
-                                val manager = activity?.supportFragmentManager
-                                manager?.beginTransaction()?.remove(this@BasketFragment)?.commit()
-                                manager?.popBackStack()
-
                             }else{
-                                Toast.makeText(context, "통신 장애", Toast.LENGTH_SHORT).show()
-                                Toast.makeText(context, "다시 주문해 주십시오", Toast.LENGTH_SHORT).show()
-                                parentFragmentManager.beginTransaction().replace(R.id.container, MainFragment(map)).commit()
+                                Toast.makeText(context, "통신 장애", Toast.LENGTH_LONG).show()
                             }
-                        }else{
-                            Toast.makeText(context, "통신 장애", Toast.LENGTH_LONG)
-                            parentFragmentManager.beginTransaction().replace(R.id.container, MainFragment(map)).commit()
-                        }
-                        job.cancel()
-                    }   //onResponse
+                            job.cancel()
+                        }   //onResponse
 
-                    override fun onFailure(call: Call<String>, t: Throwable) {
-                        Toast.makeText(context, "통신 장애", Toast.LENGTH_LONG)
-                        job.cancel()
-                    }
-                })  //call.enqueue
-            }   //job = coroutineScopeIO.launch
-        }   //binding.order.setOnClickListener
+                        override fun onFailure(call: Call<String>, t: Throwable) {
+                            Toast.makeText(context, "통신 장애", Toast.LENGTH_LONG).show()
+                            job.cancel()
+                        }
+                    })  //call.enqueue(object : Callback<String>
+                }   //job = coroutineScopeIO.launch
+            }   //else if(SettingFragment.settingPref?.getString("selectPayMode", "") == "선불")
+        }   //binding.orderOrPay.setOnClickListener
         return binding.root
     }   //onCreateView
 
-    public fun calcTotalPrice() {
+    fun calcTotalPrice() {
         var tempSum : Int = 0
 
         for(i in 0 until map.size){
@@ -280,7 +332,7 @@ class BasketFragment(map: HashMap<String, Any>) : Fragment() {
         return imgv
     }
 
-    public fun displayImgv(){
+    fun displayImgv(){
         binding.basketFrameLayout.addView(createImgv())
     }
 

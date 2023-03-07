@@ -145,8 +145,7 @@
 
         <androidx.appcompat.widget.AppCompatButton
             style="@style/buttonTextPlus"
-            android:id="@+id/order"
-            android:text="주문하기"
+            android:id="@+id/orderOrPay"
 
             android:layout_width="0dp"
             android:layout_height="match_parent"

@@ -33,52 +33,10 @@
             android:textStyle="bold"
             />
 
-        <RadioGroup
-            android:id="@+id/selectMode"
-            android:layout_gravity="bottom"
-            android:layout_marginBottom="5dp"
-
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.5"
-
-            android:orientation="horizontal"
-            >
-
-            <RadioButton
-                style="@style/radioButtonText"
-                android:id="@+id/holdRadioButton"
-                android:text="고정식"
-
-                android:background="@drawable/selector_radio_button"
-                android:textColor="@drawable/selector_radio_text"
-                android:button="@null"
-
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                />
-
-            <RadioButton
-                style="@style/radioButtonText"
-                android:id="@+id/moveRadioButton"
-                android:text="이동식"
-
-                android:background="@drawable/selector_radio_button"
-                android:textColor="@drawable/selector_radio_text"
-                android:button="@null"
-
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                />
-
-        </RadioGroup>
-
         <View
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="0.2"/>
+            android:layout_weight="0.7"/>
 
     </LinearLayout>
 
@@ -285,6 +243,107 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:orientation="horizontal">
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="2" />
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="8"
+                android:orientation="vertical">
+
+                <RadioGroup
+                    android:id="@+id/selectOrderMode"
+                    android:layout_gravity="bottom"
+                    android:layout_marginBottom="5dp"
+
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+
+                    android:orientation="horizontal"
+                    >
+
+                    <RadioButton
+                        style="@style/radioButtonText"
+                        android:id="@+id/holdRadioButton"
+                        android:text="고정식"
+
+                        android:background="@drawable/selector_radio_button"
+                        android:textColor="@drawable/selector_radio_text"
+                        android:button="@null"
+
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        />
+
+                    <RadioButton
+                        style="@style/radioButtonText"
+                        android:id="@+id/moveRadioButton"
+                        android:text="이동식"
+
+                        android:background="@drawable/selector_radio_button"
+                        android:textColor="@drawable/selector_radio_text"
+                        android:button="@null"
+
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        />
+
+                </RadioGroup>
+
+                <RadioGroup
+                    android:id="@+id/selectPayMode"
+                    android:layout_gravity="bottom"
+                    android:layout_marginBottom="5dp"
+
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+
+                    android:orientation="horizontal"
+                    >
+
+                    <RadioButton
+                        style="@style/radioButtonText"
+                        android:id="@+id/deferredRadioButton"
+                        android:text="후불"
+
+                        android:background="@drawable/selector_radio_button"
+                        android:textColor="@drawable/selector_radio_text"
+                        android:button="@null"
+
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        />
+
+                    <RadioButton
+                        style="@style/radioButtonText"
+                        android:id="@+id/preRadioButton"
+                        android:text="선불"
+
+                        android:background="@drawable/selector_radio_button"
+                        android:textColor="@drawable/selector_radio_text"
+                        android:button="@null"
+
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        />
+
+                </RadioGroup>
+            </LinearLayout>
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.5" />
 
         </LinearLayout>
 

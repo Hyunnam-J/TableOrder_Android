@@ -2,24 +2,50 @@ package com.example.tableorder
 
 import android.app.Dialog
 import android.content.Context
-import android.graphics.Point
-import android.view.ViewGroup
-import android.view.WindowManager
+import android.os.Build
+import android.util.DisplayMetrics
+import android.view.*
 
 class SizingDialog {
 
-    fun sizingDialog(dialog : Dialog, context: Context, width : Double, height : Double ){
+    fun sizingDialog(dialog : Dialog, context: Context, width : Double, height : Double) {
 
-        val windowManager = context.getSystemService(Context.WINDOW_SERVICE) as WindowManager
-        val display = windowManager.defaultDisplay
-        val size = Point()
-        display.getSize(size)
+        val x = getScreenWidth(context)
+        val y = getScreenHeight(context)
+
         val params: ViewGroup.LayoutParams? = dialog?.window?.attributes
-        val deviceWidth = size.x
-        val deviceHeight = size.y
 
-        params?.width = (deviceWidth * width).toInt()
-        params?.height = (deviceHeight * height).toInt()
+        params?.width = (x * width).toInt()
+        params?.height = (y * height).toInt()
         dialog?.window?.attributes = params as WindowManager.LayoutParams
+
     }
-}   //class
+
+    fun getScreenWidth(context: Context): Int {
+        val wm = context.getSystemService(Context.WINDOW_SERVICE) as WindowManager
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            val windowMetrics = wm.currentWindowMetrics
+            val insets = windowMetrics.windowInsets
+                .getInsetsIgnoringVisibility(WindowInsets.Type.systemBars())
+            windowMetrics.bounds.width() - insets.left - insets.right
+        } else {
+            val displayMetrics = DisplayMetrics()
+            wm.defaultDisplay.getMetrics(displayMetrics)
+            displayMetrics.widthPixels
+        }
+    }
+
+    fun getScreenHeight(context: Context): Int {
+        val wm = context.getSystemService(Context.WINDOW_SERVICE) as WindowManager
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            val windowMetrics = wm.currentWindowMetrics
+            val insets = windowMetrics.windowInsets
+                .getInsetsIgnoringVisibility(WindowInsets.Type.systemBars())
+            windowMetrics.bounds.height() - insets.bottom - insets.top
+        } else {
+            val displayMetrics = DisplayMetrics()
+            wm.defaultDisplay.getMetrics(displayMetrics)
+            displayMetrics.heightPixels
+        }
+    }
+}
