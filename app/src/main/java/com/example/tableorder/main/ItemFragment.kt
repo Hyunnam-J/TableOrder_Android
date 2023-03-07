@@ -13,7 +13,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.tableorder.Resp
+import com.example.tableorder.RespList
 import com.example.tableorder.databinding.FragmentItemBinding
 import com.example.tableorder.retrofit.ApiClient
 import com.example.tableorder.retrofit.MainApiInterface
@@ -68,44 +68,48 @@ class ItemFragment(tabCodeVO: MainTabCodeVO, map: HashMap<String, Any>) : Fragme
                 override fun onResponse(call: Call<String>, response: Response<String>) {
                     if(response.isSuccessful){
 
-                        val resp : Resp<MainItemVO> = Gson().fromJson(response.body(), object : TypeToken<Resp<MainItemVO?>?>(){}.type)
+                        val respList : RespList<MainItemVO> = Gson().fromJson(response.body(), object : TypeToken<RespList<MainItemVO?>?>(){}.type)
 
-                        try {
+                        if(respList.resultCode==1){
+                            try {
 
-                            itemList = resp.item as ArrayList<MainItemVO>
+                                itemList = respList.item as ArrayList<MainItemVO>
 
-                            //불러온 소메뉴를 어댑터로 그려준다.
-                            //그리는 과정은 innerAdapter에서.
-                            val innerAdapter = InnerAdapter(context, itemList, map)
+                                //불러온 소메뉴를 어댑터로 그려준다.
+                                //그리는 과정은 innerAdapter에서.
+                                val innerAdapter = InnerAdapter(context, itemList, map)
 
-                            if(itemList.size < 5){
-                                val innerManager = GridLayoutManager(context, 1, RecyclerView.HORIZONTAL, false)
+                                if(itemList.size < 5){
+                                    val innerManager = GridLayoutManager(context, 1, RecyclerView.HORIZONTAL, false)
 
-                                binding.innerRecv.adapter = innerAdapter
-                                binding.innerRecv.layoutManager = innerManager
-                            }else{
-                                val innerManager = GridLayoutManager(context, 4, RecyclerView.VERTICAL, false)
+                                    binding.innerRecv.adapter = innerAdapter
+                                    binding.innerRecv.layoutManager = innerManager
+                                }else{
+                                    val innerManager = GridLayoutManager(context, 4, RecyclerView.VERTICAL, false)
 
-                                binding.innerRecv.adapter = innerAdapter
-                                binding.innerRecv.layoutManager = innerManager
-                            }
+                                    binding.innerRecv.adapter = innerAdapter
+                                    binding.innerRecv.layoutManager = innerManager
+                                }
 
-                        }catch (e : java.lang.Exception){
+                            }catch (e : java.lang.Exception){
 
-                            binding.itemFrameLayout.removeView(binding.innerRecv)
-                            binding.itemFrameLayout.setBackgroundColor(Color.WHITE)
-                            displayTextv(resp.resultMsg)
+                                binding.itemFrameLayout.removeView(binding.innerRecv)
+                                binding.itemFrameLayout.setBackgroundColor(Color.WHITE)
+                                displayTextv(respList.resultMsg)
 
-                        }
+                            }   //try-catch
+                        }else{
+                            Toast.makeText(context, "데이터베이스 처리 중 오류", Toast.LENGTH_LONG).show()
+                        }   //if(respList.resultCode==1)
 
                     }else{
-                        Toast.makeText(context, "통신 에러", Toast.LENGTH_LONG)
-                    }
+                        Toast.makeText(context, "통신 에러", Toast.LENGTH_LONG).show()
+                    }   //if(response.isSuccessful)
                     job.cancel()
                 }   //override fun onResponse(call: Call<String>, response: Response<String>)
 
                 override fun onFailure(call: Call<String>, t: Throwable) {
-                    Toast.makeText(context, "통신 에러", Toast.LENGTH_LONG)
+                    Toast.makeText(context, "통신 에러", Toast.LENGTH_LONG).show()
                     job.cancel()
                 }
             })  //call.enqueue(object : Callback<String>

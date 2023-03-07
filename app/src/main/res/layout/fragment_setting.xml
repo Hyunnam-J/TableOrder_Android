@@ -189,38 +189,6 @@
 
                 </LinearLayout>
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        style="@style/settingTextName"
-                        android:layout_width="0dp"
-
-                        android:layout_height="match_parent"
-                        android:layout_weight="2"
-                        android:text="test : " />
-
-                    <TextView
-                        android:id="@+id/textTest"
-                        style="@style/settingText"
-
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="2" />
-
-                    <androidx.appcompat.widget.AppCompatButton
-                        android:id="@+id/buttonTest"
-                        style="@style/settingButton"
-                        android:layout_width="0dp"
-
-                        android:layout_height="match_parent"
-                        android:layout_weight="2"
-                        android:text="변경" />
-
-                </LinearLayout>
-
             </LinearLayout>
 
             <View

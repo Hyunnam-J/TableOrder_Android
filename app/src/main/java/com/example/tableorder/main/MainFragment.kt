@@ -3,6 +3,7 @@ package com.example.tableorder.main
 import android.app.Dialog
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.util.TypedValue
 import android.view.*
 import android.widget.*
@@ -43,6 +44,7 @@ class MainFragment(map: HashMap<String, Any>) : Fragment() {
     var map : HashMap<String, Any> = HashMap()
 
     lateinit var tNumDialog : Dialog
+    var isFirst : Boolean = true
 
     init {
         this.map = map
@@ -66,17 +68,50 @@ class MainFragment(map: HashMap<String, Any>) : Fragment() {
             binding.settingTnum.isVisible = true
 
             binding.settingTnum.setOnClickListener{
+//                tNumDialog = Dialog(context)
+//                tNumDialog.setContentView(R.layout.activity_tnum_dialog)
+//                SizingDialog().sizingDialog(tNumDialog, context, 0.4, 0.15)
+//                tNumDialog.show()
+//
+//                tNumDialog.findViewById<EditText>(R.id.textTnum).setText(SettingFragment.settingPref?.getString("Table No", ""))
+//                tNumDialog.findViewById<Button>(R.id.buttonTnum).setOnClickListener{
+//                    SettingFragment.settingEditor?.putString("Table No", tNumDialog.findViewById<EditText>(R.id.textTnum).text.toString())
+//                    SettingFragment.settingEditor?.commit()
+//                    tNumDialog.dismiss()
+//                }
+
                 tNumDialog = Dialog(context)
-                tNumDialog.setContentView(R.layout.activity_tnum_dialog)
-                SizingDialog().sizingDialog(tNumDialog, context, 0.4, 0.15)
+                tNumDialog.setContentView(R.layout.activity_keyboard_dialog)
+                SizingDialog().sizingDialog(tNumDialog, context, 0.4, 0.4)
                 tNumDialog.show()
 
-                tNumDialog.findViewById<EditText>(R.id.textTnum).setText(SettingFragment.settingPref?.getString("Table No", ""))
-                tNumDialog.findViewById<Button>(R.id.buttonTnum).setOnClickListener{
-                    SettingFragment.settingEditor?.putString("Table No", tNumDialog.findViewById<EditText>(R.id.textTnum).text.toString())
+                isFirst = true
+
+                tNumDialog.findViewById<TextView>(R.id.tNumView).text =
+                    SettingFragment.settingPref?.getString("Table No", "")
+
+                tNumDialog.findViewById<Button>(R.id.one).setOnClickListener{ enterKey("1", isFirst) }
+                tNumDialog.findViewById<Button>(R.id.two).setOnClickListener{ enterKey("2", isFirst) }
+                tNumDialog.findViewById<Button>(R.id.three).setOnClickListener{ enterKey("3", isFirst) }
+                tNumDialog.findViewById<Button>(R.id.four).setOnClickListener{ enterKey("4", isFirst) }
+                tNumDialog.findViewById<Button>(R.id.five).setOnClickListener{ enterKey("5", isFirst) }
+                tNumDialog.findViewById<Button>(R.id.six).setOnClickListener{ enterKey("6", isFirst) }
+                tNumDialog.findViewById<Button>(R.id.seven).setOnClickListener{ enterKey("7", isFirst) }
+                tNumDialog.findViewById<Button>(R.id.eight).setOnClickListener{ enterKey("8", isFirst) }
+                tNumDialog.findViewById<Button>(R.id.nine).setOnClickListener{ enterKey("9", isFirst) }
+                tNumDialog.findViewById<Button>(R.id.zero).setOnClickListener{ enterKey("0", isFirst) }
+
+                tNumDialog.findViewById<Button>(R.id.tNumDelete).setOnClickListener{
+                    tNumDialog.findViewById<TextView>(R.id.tNumView).text =
+                        removeLastChar(tNumDialog.findViewById<TextView>(R.id.tNumView).text.toString())
+                }
+
+                tNumDialog.findViewById<Button>(R.id.tNumEnter).setOnClickListener{
+                    SettingFragment.settingEditor?.putString("Table No", tNumDialog.findViewById<TextView>(R.id.tNumView).text.toString())
                     SettingFragment.settingEditor?.commit()
                     tNumDialog.dismiss()
                 }
+
             }   //binding.settingTnum.setOnClickListener
         }   //if(SettingFragment.settingPref?.getString("selectMode", "") == "이동식")
 
@@ -88,35 +123,39 @@ class MainFragment(map: HashMap<String, Any>) : Fragment() {
 
                     if(response.isSuccessful){
 
-                        val resp : Resp<MainTabCodeVO> = Gson().fromJson(response.body(), object : TypeToken<Resp<MainTabCodeVO?>?>(){}.type)
+                        val respList : RespList<MainTabCodeVO> = Gson().fromJson(response.body(), object : TypeToken<RespList<MainTabCodeVO?>?>(){}.type)
 
-                        try {
+                        if(respList.resultCode==1){
+                            try {
 
-                            tabList = resp.item as ArrayList<MainTabCodeVO>
+                                tabList = respList.item as ArrayList<MainTabCodeVO>
 
-                            viewPager.adapter = ViewPagerAdapter(parentFragmentManager, lifecycle, tabList, map)
+                                viewPager.adapter = ViewPagerAdapter(parentFragmentManager, lifecycle, tabList, map)
 
-                            //대메뉴인 tabLayout과 소메뉴 뷰 페이지인 viewPager를 합쳐준다.
-                            //소메뉴 뷰에 관한 건 viewPager에서 설정.
-                            TabLayoutMediator(tabLayout, viewPager) { tab, position ->
-                                tab.text = tabList[position].getpName()
-                            }.attach()
+                                //대메뉴인 tabLayout과 소메뉴 뷰 페이지인 viewPager를 합쳐준다.
+                                //소메뉴 뷰에 관한 건 viewPager에서 설정.
+                                TabLayoutMediator(tabLayout, viewPager) { tab, position ->
+                                    tab.text = tabList[position].getpName()
+                                }.attach()
 
-                        }catch (e : java.lang.Exception){
+                            }catch (e : java.lang.Exception){
 
-                            binding.errorFrameLayout.removeView(binding.viewPager)
-                            goOnErrorPage(resp.resultMsg)
+                                binding.errorFrameLayout.removeView(binding.viewPager)
+                                goOnErrorPage(respList.resultMsg)
 
-                        }
+                            }   //try-catch
+                        }else{
+                            Toast.makeText(context, "데이터베이스 처리 중 오류", Toast.LENGTH_LONG).show()
+                        }   //if(respList.resultCode==1)
 
                     }else{
-                        Toast.makeText(context, "통신 에러", Toast.LENGTH_LONG)
-                    }
+                        Toast.makeText(context, "통신 에러", Toast.LENGTH_LONG).show()
+                    }   //if(response.isSuccessful)
                     job.cancel()
                 }   //override fun onResponse(call: Call<String>, response: Response<String>)
 
                 override fun onFailure(call: Call<String>, t: Throwable) {
-                    Toast.makeText(context, "통신 에러", Toast.LENGTH_LONG)
+                    Toast.makeText(context, "통신 에러", Toast.LENGTH_LONG).show()
                     job.cancel()
                 }
             })  //call.enqueue(object : Callback<String>
@@ -180,5 +219,22 @@ class MainFragment(map: HashMap<String, Any>) : Fragment() {
         super.onDestroy()
         _binding = null
     }
+
+    fun enterKey(num : String, isFirst : Boolean) {
+
+        if(isFirst){
+            tNumDialog.findViewById<TextView>(R.id.tNumView).text = num
+            this.isFirst = false
+        }else{
+            tNumDialog.findViewById<TextView>(R.id.tNumView).text =
+                tNumDialog.findViewById<TextView>(R.id.tNumView).text.toString() + num
+        }
+    }
+
+    fun removeLastChar(str: String?): String? {
+        return str?.replaceFirst(".$".toRegex(), "")
+    }
 }   //class MainFragment
+
+
 

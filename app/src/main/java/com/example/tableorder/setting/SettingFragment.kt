@@ -32,8 +32,6 @@ class SettingFragment() : Fragment(), View.OnClickListener, OnCheckedChangeListe
         var selectOrderMode : String = ""
         var selectPayMode : String = ""
         var tNum : String = ""
-
-        var test : String = ""
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -55,7 +53,6 @@ class SettingFragment() : Fragment(), View.OnClickListener, OnCheckedChangeListe
 
         binding.buttonComId.setOnClickListener(this)
         binding.buttonPos.setOnClickListener(this)
-        binding.buttonTest.setOnClickListener(this)
         binding.buttonTnum.setOnClickListener(this)
 
         //고정, 이동 선택 시 값 저장 처리
@@ -82,8 +79,6 @@ class SettingFragment() : Fragment(), View.OnClickListener, OnCheckedChangeListe
         }
 
         binding.textTnum.text = tNum
-
-        binding.textTest.text = test
     }
 
     fun setting(){
@@ -97,8 +92,6 @@ class SettingFragment() : Fragment(), View.OnClickListener, OnCheckedChangeListe
         selectOrderMode = settingPref?.getString("selectOrderMode", "").toString()
         selectPayMode = settingPref?.getString("selectPayMode", "").toString()
         tNum = settingPref?.getString("Table No", "").toString()
-
-        test = settingPref?.getString("test", "").toString()
     }
     override fun onClick(v: View?) {
         when(v?.id){
@@ -106,8 +99,6 @@ class SettingFragment() : Fragment(), View.OnClickListener, OnCheckedChangeListe
             R.id.buttonComId -> showDialog("Com ID", comId)
             R.id.buttonPos -> showDialog("Pos", pos)
             R.id.buttonTnum -> showDialog("Table No", tNum)
-
-            R.id.buttonTest -> showDialog("test", test)
 
             R.id.settingCancel -> settingDialog!!.dismiss()
 

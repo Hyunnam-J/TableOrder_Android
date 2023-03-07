@@ -9,6 +9,7 @@ import android.graphics.drawable.TransitionDrawable
 import android.os.Build
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.view.animation.AnimationUtils
 import android.widget.*
 import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.RecyclerView.Adapter
@@ -80,8 +81,8 @@ class InnerAdapter(
         h.menu.setOnClickListener{
 
             //메뉴 선택 시 애니메이션 효과
-//            val animSelect = AnimationUtils.loadAnimation(context, R.anim.anim_select)
-//            h.menu.startAnimation(animSelect)
+            val animSelect = AnimationUtils.loadAnimation(context, R.anim.anim_select)
+            h.menu.startAnimation(animSelect)
 
             //메뉴 선택 시 배경색 변화 효과
             var transColor = arrayOf(ColorDrawable(Color.parseColor("#97A1E1")), ColorDrawable(Color.WHITE))

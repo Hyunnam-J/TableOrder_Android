@@ -2,13 +2,13 @@ package com.example.tableorder;
 
 import java.util.List;
 
-public class Resp<T> {
+public class RespList<T> {
 
 	int resultCode;
 	String resultMsg;
 	List<T> item;
 
-	public Resp(int resultCode, String resultMsg, List<T> item) {
+	public RespList(int resultCode, String resultMsg, List<T> item) {
 		super();
 		this.resultCode = resultCode;
 		this.resultMsg = resultMsg;
