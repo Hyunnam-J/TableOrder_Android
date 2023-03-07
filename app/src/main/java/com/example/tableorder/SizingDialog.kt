@@ -1,17 +1,22 @@
 package com.example.tableorder
 
+import android.app.Activity
 import android.app.Dialog
 import android.content.Context
 import android.os.Build
 import android.util.DisplayMetrics
 import android.view.*
+import androidx.window.layout.WindowMetrics
+import androidx.window.layout.WindowMetricsCalculator
 
 class SizingDialog {
 
     fun sizingDialog(dialog : Dialog, context: Context, width : Double, height : Double) {
 
-        val x = getScreenWidth(context)
-        val y = getScreenHeight(context)
+        val windowMetrics : WindowMetrics = WindowMetricsCalculator.getOrCreate().computeCurrentWindowMetrics(context as Activity)
+
+        val x = windowMetrics.bounds.width()
+        val y = windowMetrics.bounds.height()
 
         val params: ViewGroup.LayoutParams? = dialog?.window?.attributes
 
@@ -19,33 +24,5 @@ class SizingDialog {
         params?.height = (y * height).toInt()
         dialog?.window?.attributes = params as WindowManager.LayoutParams
 
-    }
-
-    fun getScreenWidth(context: Context): Int {
-        val wm = context.getSystemService(Context.WINDOW_SERVICE) as WindowManager
-        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-            val windowMetrics = wm.currentWindowMetrics
-            val insets = windowMetrics.windowInsets
-                .getInsetsIgnoringVisibility(WindowInsets.Type.systemBars())
-            windowMetrics.bounds.width() - insets.left - insets.right
-        } else {
-            val displayMetrics = DisplayMetrics()
-            wm.defaultDisplay.getMetrics(displayMetrics)
-            displayMetrics.widthPixels
-        }
-    }
-
-    fun getScreenHeight(context: Context): Int {
-        val wm = context.getSystemService(Context.WINDOW_SERVICE) as WindowManager
-        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-            val windowMetrics = wm.currentWindowMetrics
-            val insets = windowMetrics.windowInsets
-                .getInsetsIgnoringVisibility(WindowInsets.Type.systemBars())
-            windowMetrics.bounds.height() - insets.bottom - insets.top
-        } else {
-            val displayMetrics = DisplayMetrics()
-            wm.defaultDisplay.getMetrics(displayMetrics)
-            displayMetrics.heightPixels
-        }
     }
 }

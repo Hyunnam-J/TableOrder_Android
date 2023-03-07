@@ -83,6 +83,9 @@ dependencies {
     implementation 'com.github.bumptech.glide:glide:4.14.2'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.14.2'
 
+    //현재 내 윈도우 창 크기 구하기
+    implementation 'androidx.window:window:1.0.0'
+
     /***************************************************************************/
     implementation fileTree(include: ['*.jar'], dir: 'libs')
 //    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
