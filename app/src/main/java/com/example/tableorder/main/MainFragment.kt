@@ -63,7 +63,7 @@ class MainFragment(map: HashMap<String, Any>) : Fragment() {
 
         val context: Context = requireContext()
 
-        if(SettingFragment.settingPref?.getString("selectOrderMode", "") == "이동식"){
+        if(MainActivity.pref?.getString("selectOrderMode", "") == "이동식"){
 
             binding.settingTnum.isVisible = true
 
@@ -88,7 +88,7 @@ class MainFragment(map: HashMap<String, Any>) : Fragment() {
                 isFirst = true
 
                 tNumDialog.findViewById<TextView>(R.id.tNumView).text =
-                    SettingFragment.settingPref?.getString("Table No", "")
+                    MainActivity.pref?.getString("Table No", "")
 
                 tNumDialog.findViewById<Button>(R.id.one).setOnClickListener{ enterKey("1", isFirst) }
                 tNumDialog.findViewById<Button>(R.id.two).setOnClickListener{ enterKey("2", isFirst) }
@@ -107,17 +107,31 @@ class MainFragment(map: HashMap<String, Any>) : Fragment() {
                 }
 
                 tNumDialog.findViewById<Button>(R.id.tNumEnter).setOnClickListener{
-                    SettingFragment.settingEditor?.putString("Table No", tNumDialog.findViewById<TextView>(R.id.tNumView).text.toString())
-                    SettingFragment.settingEditor?.commit()
+
+                    MainActivity.editor?.putString("Table No", tNumDialog.findViewById<TextView>(R.id.tNumView).text.toString())
+                    MainActivity.editor?.commit()
+
+
+
+
+
+
+
+
+
+
+
                     tNumDialog.dismiss()
                 }
-
             }   //binding.settingTnum.setOnClickListener
         }   //if(SettingFragment.settingPref?.getString("selectMode", "") == "이동식")
 
         //먼저 대메뉴를 불러오고,
         job = coroutineScopeIO.launch {
-            val call : Call<String> = apiInterface.tabMenu(SettingFragment.comId, "1", SettingFragment.pos)
+            val call : Call<String> = apiInterface.tabMenu(
+                MainActivity.pref?.getString("Com ID", "").toString(),
+                "1",
+                MainActivity.pref?.getString("Pos", "").toString())
             call.enqueue(object : Callback<String>{
                 override fun onResponse(call: Call<String>, response: Response<String>) {
 

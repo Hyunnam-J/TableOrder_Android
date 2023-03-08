@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView.VERTICAL
 import com.bxl.BXLConst
 import com.bxl.config.editor.BXLConfigLoader
+import com.example.tableorder.MainActivity
 import com.example.tableorder.R
 import com.example.tableorder.databinding.FragmentBasketBinding
 import com.example.tableorder.main.MainFragment
@@ -72,9 +73,9 @@ class BasketFragment(map: HashMap<String, Any>) : Fragment() {
 
         basketList = map.values.toList() as List<BasketVO>
 
-        if(SettingFragment.settingPref?.getString("selectPayMode", "") == "후불")
+        if(MainActivity.pref?.getString("selectPayMode", "") == "후불")
             binding.orderOrPay.text = "주문하기"
-        else if(SettingFragment.settingPref?.getString("selectPayMode", "") == "선불")
+        else if(MainActivity.pref?.getString("selectPayMode", "") == "선불")
             binding.orderOrPay.text = "결제하기"
 
         if(basketList!!.isEmpty())
@@ -89,11 +90,14 @@ class BasketFragment(map: HashMap<String, Any>) : Fragment() {
                 return@setOnClickListener
             }
 
-            if(SettingFragment.settingPref?.getString("selectPayMode", "") == "후불"){
+            if(MainActivity.pref?.getString("selectPayMode", "") == "후불"){
 
                 job = coroutineScopeIO.launch {
 
-                    val call : Call<String> = apiInterface.order(SendOrderVO(basketList!!, Integer.parseInt(SettingFragment.tNum), 0))
+                    val call : Call<String> = apiInterface.order(
+                        SendOrderVO(basketList!!,
+                            Integer.parseInt(MainActivity.pref?.getString("Table No", "").toString()),
+                            0))
                     call.enqueue(object : Callback<String> {
                         override fun onResponse(call: Call<String>, response: Response<String>) {
                             if(response.isSuccessful){
@@ -253,7 +257,7 @@ class BasketFragment(map: HashMap<String, Any>) : Fragment() {
                         }
                     })  //call.enqueue
                 }   //job = coroutineScopeIO.launch
-            }else if(SettingFragment.settingPref?.getString("selectPayMode", "") == "선불"){
+            }else if(MainActivity.pref?.getString("selectPayMode", "") == "선불"){
 
 
 
@@ -263,7 +267,7 @@ class BasketFragment(map: HashMap<String, Any>) : Fragment() {
                     val call : Call<String> = apiInterface.pay(
                         SendPayVO(
                             basketList!!,
-                            Integer.parseInt(SettingFragment.tNum)
+                            Integer.parseInt(MainActivity.pref?.getString("Table No", "").toString())
                         ))
                     call.enqueue(object : Callback<String>{
                         override fun onResponse(call: Call<String>, response: Response<String>) {

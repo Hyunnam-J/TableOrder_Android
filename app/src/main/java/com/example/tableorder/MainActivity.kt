@@ -1,6 +1,7 @@
 package com.example.tableorder
 
 import android.app.Dialog
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.animation.AnimationUtils
 import android.widget.Button
@@ -23,7 +24,7 @@ import retrofit2.Response
 class MainActivity() : AppCompatActivity() {
 
     val TAG = "로그"
-    private lateinit var binding : ActivityMainBinding
+    lateinit var binding : ActivityMainBinding
     var map : HashMap<String, Any> = HashMap()
     lateinit var checkPasswordDialog : Dialog
     lateinit var job: Job
@@ -31,12 +32,20 @@ class MainActivity() : AppCompatActivity() {
     private val apiInterface : SettingApiInterface = ApiClient.getApiClient().create(
         SettingApiInterface::class.java)
 
+    companion object{
+        var pref : SharedPreferences? = null
+        var editor : SharedPreferences.Editor? = null
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        startSettingFragment()
+//        startSettingFragment()
+
+        pref = this?.getSharedPreferences("pref", 0)!!
+        editor = pref?.edit()!!
 
         val animMain = AnimationUtils.loadAnimation(this, R.anim.anim_main)
         binding.enter.startAnimation(animMain)
@@ -88,7 +97,9 @@ class MainActivity() : AppCompatActivity() {
             job = coroutineScopeIO.launch {
 
                 //설정된 회사 아이디 값과 포스 값 별로 비밀번호를 조회한다
-                val call : Call<String> = apiInterface.checkPassword(SettingFragment.comId, SettingFragment.pos)
+                val call : Call<String> = apiInterface.checkPassword(
+                    pref?.getString("Com ID", "").toString(),
+                    pref?.getString("Pos", "").toString())
                 call.enqueue(object : Callback<String>{
                     override fun onResponse(call: Call<String>, response: Response<String>) {
                         if(response.isSuccessful){

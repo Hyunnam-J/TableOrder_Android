@@ -13,6 +13,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.tableorder.MainActivity
 import com.example.tableorder.RespList
 import com.example.tableorder.databinding.FragmentItemBinding
 import com.example.tableorder.retrofit.ApiClient
@@ -59,11 +60,12 @@ class ItemFragment(tabCodeVO: MainTabCodeVO, map: HashMap<String, Any>) : Fragme
 
         val context = requireContext()
 
-        val settingFragment = SettingFragment
-
         //소메뉴를 불러오고,
         job = coroutineScopeIO.launch {
-            val call : Call<String> = apiInterface.itemMenu(settingFragment.comId, tabCodeVO.getpCode(), settingFragment.pos)
+            val call : Call<String> = apiInterface.itemMenu(
+                MainActivity.pref?.getString("Com ID", "").toString(),
+                tabCodeVO.getpCode(),
+                MainActivity.pref?.getString("Pos", "").toString())
             call.enqueue(object : Callback<String> {
                 override fun onResponse(call: Call<String>, response: Response<String>) {
                     if(response.isSuccessful){
