@@ -42,8 +42,6 @@ class MainActivity() : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-//        startSettingFragment()
-
         pref = this?.getSharedPreferences("pref", 0)!!
         editor = pref?.edit()!!
 
@@ -68,17 +66,6 @@ class MainActivity() : AppCompatActivity() {
             enterSetting()
         }
     }   //onCreate
-
-    fun startSettingFragment(){
-        val settingFragment = SettingFragment()
-
-        supportFragmentManager.beginTransaction()
-            .replace(binding.container.id, settingFragment).commit()
-
-        val manager = this.supportFragmentManager
-        manager.beginTransaction().remove(settingFragment).commit()
-        manager.popBackStack()
-    }
 
     fun enterSetting(){
 

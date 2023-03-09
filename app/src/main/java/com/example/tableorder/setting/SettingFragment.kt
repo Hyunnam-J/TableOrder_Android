@@ -113,6 +113,18 @@ class SettingFragment() : Fragment(), View.OnClickListener, OnCheckedChangeListe
         settingDialog.findViewById<Button>(R.id.settingCancel).setOnClickListener(this)
         settingDialog.findViewById<Button>(R.id.settingConfirm).setOnClickListener{
 
+            if(settingDialog.findViewById<EditText>(R.id.setValues).text.toString()==""){
+                Toast.makeText(context, "값을 입력해 주세요", Toast.LENGTH_LONG).show()
+                return@setOnClickListener
+            }
+
+            if(key=="Table No"){
+                if(settingDialog.findViewById<EditText>(R.id.setValues).text.toString().substring(0, 1)=="0"){
+                    Toast.makeText(context, "잘못된 테이블 번호 형식입니다", Toast.LENGTH_LONG).show()
+                    return@setOnClickListener
+                }
+            }
+
             MainActivity.editor?.putString(key, settingDialog.findViewById<EditText>(R.id.setValues).text.toString())
             MainActivity.editor?.commit()
 

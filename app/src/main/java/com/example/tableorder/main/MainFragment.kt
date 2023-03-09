@@ -90,16 +90,16 @@ class MainFragment(map: HashMap<String, Any>) : Fragment() {
                 tNumDialog.findViewById<TextView>(R.id.tNumView).text =
                     MainActivity.pref?.getString("Table No", "")
 
-                tNumDialog.findViewById<Button>(R.id.one).setOnClickListener{ enterKey("1", isFirst) }
-                tNumDialog.findViewById<Button>(R.id.two).setOnClickListener{ enterKey("2", isFirst) }
-                tNumDialog.findViewById<Button>(R.id.three).setOnClickListener{ enterKey("3", isFirst) }
-                tNumDialog.findViewById<Button>(R.id.four).setOnClickListener{ enterKey("4", isFirst) }
-                tNumDialog.findViewById<Button>(R.id.five).setOnClickListener{ enterKey("5", isFirst) }
-                tNumDialog.findViewById<Button>(R.id.six).setOnClickListener{ enterKey("6", isFirst) }
-                tNumDialog.findViewById<Button>(R.id.seven).setOnClickListener{ enterKey("7", isFirst) }
-                tNumDialog.findViewById<Button>(R.id.eight).setOnClickListener{ enterKey("8", isFirst) }
-                tNumDialog.findViewById<Button>(R.id.nine).setOnClickListener{ enterKey("9", isFirst) }
-                tNumDialog.findViewById<Button>(R.id.zero).setOnClickListener{ enterKey("0", isFirst) }
+                tNumDialog.findViewById<Button>(R.id.one).setOnClickListener{ enterKey("1") }
+                tNumDialog.findViewById<Button>(R.id.two).setOnClickListener{ enterKey("2") }
+                tNumDialog.findViewById<Button>(R.id.three).setOnClickListener{ enterKey("3") }
+                tNumDialog.findViewById<Button>(R.id.four).setOnClickListener{ enterKey("4") }
+                tNumDialog.findViewById<Button>(R.id.five).setOnClickListener{ enterKey("5") }
+                tNumDialog.findViewById<Button>(R.id.six).setOnClickListener{ enterKey("6") }
+                tNumDialog.findViewById<Button>(R.id.seven).setOnClickListener{ enterKey("7") }
+                tNumDialog.findViewById<Button>(R.id.eight).setOnClickListener{ enterKey("8") }
+                tNumDialog.findViewById<Button>(R.id.nine).setOnClickListener{ enterKey("9") }
+                tNumDialog.findViewById<Button>(R.id.zero).setOnClickListener{ enterKey("0") }
 
                 tNumDialog.findViewById<Button>(R.id.tNumDelete).setOnClickListener{
                     tNumDialog.findViewById<TextView>(R.id.tNumView).text =
@@ -108,18 +108,18 @@ class MainFragment(map: HashMap<String, Any>) : Fragment() {
 
                 tNumDialog.findViewById<Button>(R.id.tNumEnter).setOnClickListener{
 
+                    if(tNumDialog.findViewById<TextView>(R.id.tNumView).text.toString()==""){
+                        Toast.makeText(context, "값을 입력해 주세요", Toast.LENGTH_LONG).show()
+                        return@setOnClickListener
+                    }
+
+                    if(tNumDialog.findViewById<TextView>(R.id.tNumView).text.toString().substring(0, 1)=="0"){
+                        Toast.makeText(context, "잘못된 테이블 번호 형식입니다", Toast.LENGTH_LONG).show()
+                        return@setOnClickListener
+                    }
+
                     MainActivity.editor?.putString("Table No", tNumDialog.findViewById<TextView>(R.id.tNumView).text.toString())
                     MainActivity.editor?.commit()
-
-
-
-
-
-
-
-
-
-
 
                     tNumDialog.dismiss()
                 }
@@ -234,11 +234,11 @@ class MainFragment(map: HashMap<String, Any>) : Fragment() {
         _binding = null
     }
 
-    fun enterKey(num : String, isFirst : Boolean) {
+    fun enterKey(num : String) {
 
         if(isFirst){
             tNumDialog.findViewById<TextView>(R.id.tNumView).text = num
-            this.isFirst = false
+            isFirst = false
         }else{
             tNumDialog.findViewById<TextView>(R.id.tNumView).text =
                 tNumDialog.findViewById<TextView>(R.id.tNumView).text.toString() + num
